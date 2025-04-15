@@ -79,25 +79,37 @@ function setupScrollReveal() {
     });
 }
 
-// Form Handling Function
+// Updated script.js code (focus on the handleFormSubmission function)
 async function handleFormSubmission(event, endpoint, actionName, isFileUpload = false) {
     event.preventDefault();
     const form = event.target;
     const formData = isFileUpload ? new FormData(form) : Object.fromEntries(new FormData(form));
 
     try {
+        // Show loading state (optional)
+        form.querySelector('button').disabled = true;
+
         const response = await fetch(endpoint, {
             method: "POST",
             headers: isFileUpload ? undefined : { "Content-Type": "application/json" },
             body: isFileUpload ? formData : JSON.stringify(formData)
         });
 
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || `${actionName} failed`);
+        }
+
         const result = await response.json();
-        showFeedback(response.ok, result.message || `${actionName} Successful!`);
-        if (response.ok) form.reset();
+        showFeedback(true, result.message || `${actionName} Successful!`);
+        form.reset();
+
     } catch (error) {
         console.error(`${actionName} Error:`, error);
-        showFeedback(false, `${actionName} Failed. Please try again.`);
+        showFeedback(false, error.message || `${actionName} Failed. Please try again.`);
+    } finally {
+        // Re-enable button
+        form.querySelector('button').disabled = false;
     }
 }
 
