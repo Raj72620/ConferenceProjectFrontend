@@ -1,0 +1,170 @@
+ 
+/* Remove space between navbar and heading */
+.registration-heading {
+    margin-top: 0;
+    padding-top: 15px;
+    /* tetxt-align: center; */
+}
+
+/* Committee Section Title */
+.registration-heading h2 {
+    font-size: 30px;
+    color: #002244;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+   
+}
+
+/* Committee Members Grid */
+.committee-container {
+    width: 100vw; /* Occupies full width */
+    max-width: 100%;
+    margin: 0 auto; /* Center align */
+    padding: 20px 5%;
+    box-sizing: border-box;
+}
+
+/* Grid Layout */
+.committee-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Increased min card size */
+    gap: 40px; /* Increased gap */
+    justify-content: center;
+    width: 100%;
+}
+
+/* Individual Committee Card */
+.committee-card {
+    background:linear-gradient(to right, rgb(111, 152, 175), rgb(47, 108, 169), rgb(190, 190, 237)) ;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+    width: 100%;
+    height: 350px; /* Increased height */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.committee-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Committee Member Image */
+.committee-card img {
+    width: 120px; /* Increased size */
+    height: 120px; /* Increased size */
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 15px;
+}
+
+/* Name & Position */
+.committee-card h3 {
+    margin: 10px 0 5px;
+    font-size: 22px; /* Increased size */
+    color: #002244;
+}
+
+.committee-card .position {
+    font-size: 16px;
+    font-weight: bold;
+    color: #555;
+}
+
+/* Navbar - Removed bottom margin to remove gap */
+ 
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .committee-grid {
+        grid-template-columns: repeat(3, 1fr); /* 3 columns for medium screens */
+    }
+}
+
+@media (max-width: 768px) {
+    .committee-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns for tablets */
+    }
+    .committee-card {
+        height: auto; /* Adjust height for smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .committee-grid {
+        grid-template-columns: repeat(1, 1fr); /* 1 column for small screens */
+    }
+    .committee-card img {
+        width: 100px; /* Adjusted for small screens */
+        height: 100px;
+    }
+}
+/* Container Styling */
+.table-container {
+    width: 80%;
+    margin: 40px auto;
+    padding: 20px;
+    background: linear-gradient(to bottom, #4a84c4, #336699);
+    border-radius: 10px;
+    text-align: center;
+}
+
+/* Heading */
+.table-container h2 {
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+/* Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* Table Header */
+thead {
+    background: #003366;
+    color: white;
+    font-size: 18px;
+}
+
+th, td {
+    padding: 12px;
+    border: 1px solid #ccc;
+}
+
+/* Alternating Row Colors */
+tbody tr:nth-child(odd) {
+    background: #f8f8f8;
+}
+
+/* Font Style */
+th {
+    font-weight: bold;
+}
+
+td {
+    font-size: 16px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .table-container {
+        width: 95%;
+    }
+    
+    th, td {
+        padding: 10px;
+        font-size: 14px;
+    }
+}

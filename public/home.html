@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>home</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles/styles.css">
+</head>
+<body>
+<!-- contact-bar -->
+    <div class="contact-bar">
+        <a href="mailto:yourmail@gmail.com" id="email">iccingc@svcet.in</a>
+        <a href="https://wa.me/1234567890" target="_blank" id="whatsapp"><span class="phone-icon">📞</span>
+            9597202553
+        </a>
+    </div>
+    <!-- conference-section -->
+    <div class="conference-section">
+        <div class="logo-container">
+            <a href="#">
+                <img src="/images/logoo.jpeg" alt="Conference Logo">
+            </a>
+        </div>
+
+        <div class="conference-details">
+            <p><b><strong>1<sup>st</sup></strong>International Conference on</b></p>
+            <p class="highlight show"><strong>INTERNATIONAL CONFERENCE ON COMPUTATIONAL INTELLIGENCE AND NEXT GENERATION COMMUNICATION</strong></p>
+            <p>25<sup>th</sup> – 26<sup>th</sup>  July 2025</p>
+        </div>
+
+        <div class="extra-logo-container">
+            <img src="/images/flogo.jpg" alt="Footer Logo">
+        </div>
+    </div>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo"></div>
+        <ul class="nav-links">
+            <li><a href="/home.html">Home</a></li>
+            <li><a href="/abouutus.html">About Us</a></li>
+            <li class="dropdown">
+                <a href="/call.html">Call for Papers</a>
+                <ul class="dropdown-menu">
+                    <li><a href="#tracks-container">Scope</a></li>
+                    <li><a href="submission.html">Paper Submission</a></li>
+                    <li><a href="">Downloads</a></li>
+                    <li><a href="#footer-container">Important Dates</a></li>
+                </ul>
+            </li>
+            <li><a href="/registration.html">Registration</a></li>
+            <li><a href="invitedSpeaker.html">Invited Speakers</a></li>
+            <li><a href="/publication.html">Publication</a></li>
+            <li><a href="/c1.html">Committees</a></li>
+            <li><a href="/contact.html">Contact</a></li>
+        </ul>
+        <div class="menu-toggle" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+    <!-- Registartion Heading -->
+    <!-- <div class="registration-heading">
+        <h2>Registration</h2>
+    </div> -->
+
+    <!-- Image Conatiner -->
+    <!-- <div class="container">
+        <img src="image.png" alt="Your Image">
+        <img src="image.png" alt="Your Image">
+        <img src="image.png" alt="Your Image">
+    </div> -->
+    <div class="container mt-4">
+        <div id="imageCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="images/image.png" class="d-block w-100" alt="Image 1">
+                </div>
+                <div class="carousel-item">
+                    <img src="images/image.png" class="d-block w-100" alt="Image 2">
+                </div>
+                <div class="carousel-item">
+                    <img src="images/image.png" class="d-block w-100" alt="Image 3">
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#imageCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#imageCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </button>
+        </div>
+    </div>
+    <!-- conference-container1 -->
+    <div class="conference-container1">
+        <!-- Left Section -->
+        <div class="left-section">
+            <h3>Previous ICCINGC proceedings</h3>
+            <div class="conference-box">
+                <h4>1<sup>st</sup> ICSINGC – 2025</h4>
+                <pre>                                </pre>
+            </div>
+        </div>
+
+        <!-- Right Section -->
+        <div class="right-section">
+            <h2><strong>1<sup>st</sup></strong>International Conference On Computational Intelligence And Next Generation Communication</h2>
+            <p> 
+                The 1<sup>st</sup> International Conference on Sustainable Materials Science, Structures, and Manufacturing (ICSMSM 2K25) will serve academicians, scholars, and professionals interested in mechanical engineering advances. ICSMSM-2K25 aims to enhance students, researchers, academicians, working professionals, and scientists. The conference will concentrate on technological and recent developments. Eminent professionals will also give keynote addresses at the meeting.
+            </p>
+            <button class="know-more-btn" onclick="knowMore()">Know More</button>
+        </div>
+    </div>
+    <!-- footer -->
+    <footer id="footer" class="footer">
+        <div class="footer-container" id="footer-container">
+            <!-- Important Dates -->
+            <div class="footer-section">
+                <h3>Important Dates</h3>
+                <table>
+                    <tr>
+                        <td class="highlight">Full Paper submission</td>
+                        <td class="highlight">April 30<sup>st</sup> 2025</td>
+                    </tr>
+                    <tr>
+                        <td class="highlight">Notification Of Acceptance</td>
+                        <td class="highlight">May 30<sup>th</sup> 2025</td>
+                    </tr>
+                    <tr>
+                        <td class="highlight">Camera Ready Papper Due</td>
+                        <td class="highlight">June 20<sup>st</sup> 2025</td>
+                    </tr>
+                    <tr>
+                        <td class="highlight">Registration Open</td>
+                        <td class="highlight">July 10<sup>st</sup> 2025</td>
+                    </tr>
+                  
+                    <tr>
+                        <td class="highlight">Conference Date</td>
+                        <td class="highlight">July 25<sup>th</sup> & 26<sup>th</sup> 2025</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <a href="/home.html"><li>Home</li></a>
+                    <a href="/abouutus.html"></a>
+                     <a href="/call.html"><li>Call For Papers</li></a>
+                    <a href="/registration.html"><li>Registration</li></a>
+                     <a href="/c1.html"><li>Committees</li></a>
+                </ul>
+            </div>
+
+            <!-- Downloads -->
+            <div class="footer-section">
+                <h3>Downloads</h3>
+                <ul>
+                    <li>Brochure</li>
+                    <li>Guide for authors</li>
+                    <a href="/registration.html"><li>Registration</li></a> 
+                </ul>
+            </div>
+        </div>
+
+        <!-- Copyright Section -->
+        <div class="footer-bottom">
+            <p>© Copyright ICSMSM. All rights reserved.</p>
+            <p>Designed by <span class="designer">AFIYA AFNAIN</span></p>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="scripts/script.js"></script> <!-- Link to JavaScript -->
+</body>
+</html>

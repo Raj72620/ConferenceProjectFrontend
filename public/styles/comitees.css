@@ -1,0 +1,935 @@
+.scientific-committee-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    background-color: #f0f0f0;
+    padding: 30px;
+    border-radius: 10px;
+    margin: 20px 0;
+    flex-wrap: nowrap; /* Prevent wrapping */
+}
+
+
+/* Left Side: Member Profiles */
+.scientific-members {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 50%;
+}
+
+/* Individual Member Box */
+.member-box {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    /* box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); */
+    text-align: center;
+    width: 250px;
+    opacity: 0;
+    transform: translateX(-100%);
+    animation: slideIn 1s forwards;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Image should be square */
+.member-box img {
+    width: 220px;
+    height: 220px;
+    border-radius: 10px;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+/* Name and Qualification Below Image */
+.member-details {
+    width: 100%;
+    text-align: center;
+    padding-top: 10px;
+}
+
+.member-details h3 {
+    font-size: 16px;
+    margin: 5px 0;
+}
+
+.member-details p {
+    font-size: 14px;
+    color: gray;
+}
+
+/* New Container for 4 Photos in One Box */
+.multi-member-box {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    /* box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); */
+    text-align: center;
+    width: 90%; /* Wider container */
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+/* Smaller Images for the 4-Person Container */
+.multi-member-box img {
+    width: 120px;
+    height: 120px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.multi-member-box .member-details {
+    width: 100%;
+    text-align: center;
+}
+
+/* Right Side: Committee List */
+.scientific-committee {
+    width: 40%;
+}
+
+.scientific-committee h3 {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.scientific-committee ul {
+    list-style: none;
+    padding: 0;
+}
+
+.scientific-committee li {
+    background: white;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 8px;
+    /* box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); */
+    opacity: 0;
+    transform: translateX(-100%);
+    animation: slideIn 1s forwards;
+    animation-delay: 0.3s;
+}
+
+/* Animation */
+@keyframes slideIn {
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+.scientific-committee-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    background-color: #f0f0f0;
+    padding: 30px;
+    border-radius: 10px;
+    margin: 20px 0;
+    flex-wrap: wrap; /* Allow wrapping */
+    gap: 40px; /* Adds space between left and right sections */
+}
+
+/* Left Side: Centered Members */
+.scientific-members {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centers all images */
+    gap: 20px;
+    width: 50%;
+}
+
+/* Individual Member Box */
+.member-box {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    /* box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); */
+    text-align: center;
+    width: 250px;
+}
+
+/* 4 Photos in One Box */
+.multi-member-box {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    /* box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); */
+    width: 100%;
+}
+
+/* Smaller Images for 4-Person Container */
+.multi-member-box img {
+    width: 120px;
+    height: 120px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+/* Right Side: Keep Committee List Fixed */
+.scientific-committee {
+    width: 40%;
+    text-align: center;
+}
+.scientific-committee-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    background-color: #f0f0f0;
+    padding: 30px;
+    border-radius: 10px;
+    margin: 20px 0;
+    flex-wrap: nowrap; /* Prevents the Scientific Committee from moving down */
+}
+
+/* Left Side: Center Members Properly */
+.scientific-members {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 55%; /* Adjust width to keep space for the right side */
+}
+
+/* Individual Member Box */
+.member-box {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    /* box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); */
+    text-align: center;
+    width: 250px;
+}
+
+/* 4 Photos in One Box */
+.multi-member-box {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    /* box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); */
+    width: 100%;
+}
+
+/* Smaller Images for 4-Person Container */
+.multi-member-box img {
+    width: 120px;
+    height: 120px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+/* Right Side: Keep Committee List Fixed */
+.scientific-committee {
+    width: 40%; /* Keeps the section from shifting down */
+    text-align: center;
+    align-self: flex-start; /* Ensures it stays at the top */
+}
+/* Scientific Committee Section */
+.scientific-committee-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    background-color: #f0f0f0;
+    padding: 30px;
+    border-radius: 10px;
+    margin: 20px 0;
+    flex-wrap: nowrap;
+}
+
+/* Left Side: Member Profiles */
+.scientific-members {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 50%; /* Keeps enough space for the right side */
+}
+
+/* Individual Member Box */
+.member-box {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    /* box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); */
+    text-align: center;
+    width: 250px;
+}
+
+/* 4 Photos in One Box */
+.multi-member-box {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    /* box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); */
+    width: 70%; /* Reduce width to keep it aligned properly */
+    flex-wrap: wrap;
+}
+
+/* Smaller Images for 4-Person Container */
+.multi-member-box img {
+    width: 100px; /* Reduce size for better alignment */
+    height: 100px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.multi-member-box .member-details {
+    width: 100%;
+    text-align: center;
+}
+
+/* Right Side: Committee List */
+.scientific-committee {
+    width: 40%;
+    text-align: center;
+    align-self: flex-start;
+}
+/* Scientific Committee Section */
+.scientific-committee-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    background-color: #f0f0f0;
+    padding: 30px;
+    border-radius: 10px;
+    margin: 20px 0;
+    flex-wrap: nowrap;
+}
+
+/* Left Side: Member Profiles */
+.scientific-members {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 50%; /* Keeps enough space for the right side */
+}
+
+/* Individual Member Box */
+.member-box {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    /* box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); */
+    text-align: center;
+    width: 250px;
+}
+
+/* 4 Photos in a 2x2 Grid */
+.multi-member-box {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 columns */
+    gap: 10px;
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    /* box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); */
+    width: 70%; /* Reduce width to keep it aligned properly */
+}
+
+/* Smaller Images for 4-Person Container */
+.multi-member-box img {
+    width: 100px; /* Reduce size for better alignment */
+    height: 100px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.multi-member-box .member-details {
+    width: 100%;
+    text-align: center;
+}
+
+/* Right Side: Committee List */
+.scientific-committee {
+    width: 40%;
+    text-align: center;
+    align-self: flex-start;
+}
+.multi-member-box {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 columns */
+    gap: 10px;
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    /* box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); */
+    width: 250px; /* Reduce width to align properly below */
+    margin-top: 20px; /* Adds space below first 3 photos */
+}
+/* Scientific Committee Section */
+.scientific-committee-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    background-color: #f0f0f0;
+    padding: 30px;
+    border-radius: 10px;
+    margin: 20px 0;
+    flex-wrap: nowrap;
+}
+
+/* Left Side: Member Profiles */
+.scientific-members {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 50%; /* Keeps enough space for the right side */
+}
+
+/* Individual Member Box */
+.member-box {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    /* box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); */
+    text-align: center;
+    width: 250px;
+}
+
+/* 4 Photos in a 2x2 Grid */
+.multi-member-box {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 columns */
+    gap: 10px;
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    /* box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); */
+    width: 250px; /* Reduce width to align properly below */
+    margin-top: 20px; /* Adds space below first 3 photos */
+}
+
+/* Smaller Images for 4-Person Container */
+.multi-member-box img {
+    width: 100px; /* Reduce size for better alignment */
+    height: 100px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.multi-member-box .member-details {
+    width: 100%;
+    text-align: center;
+}
+
+/* Two More Photos Below the 4-Photo Section */
+.additional-members {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.additional-member-box {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    /* box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); */
+    text-align: center;
+    width: 250px;
+}
+
+.additional-member-box img {
+    width: 200px;
+    height: 200px;
+    border-radius: 10px;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+/* Right Side: Committee List */
+.scientific-committee {
+    width: 40%;
+    text-align: center;
+    align-self: flex-start;
+}
+/* Ensures Additional Photos Stay Below */
+.additional-members {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 100%; /* Ensures it takes full width below */
+    margin-top: 20px;
+}
+
+/* Same Style as the First 3 Photos */
+.additional-member-box {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    /* box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); */
+    text-align: center;
+    width: 250px; /* Same width */
+}
+
+/* Ensures Same Size for All Photos */
+.additional-member-box img {
+    width: 200px;
+    height: 200px;
+    border-radius: 10px;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+/* Ensures Last Two Photos Stay Below the 4-Photo Section */
+.additional-members {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+    width: 100%; /* Ensures they take full width below */
+}
+
+/* Keep the Last Two Photos the Same Size as the First Three */
+.additional-member-box {
+    background: none;
+    padding: 20px;
+    border-radius: 10px;
+    /* box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); */
+    text-align: center;
+    width: 250px; /* Matches first three photos */
+}
+
+.additional-member-box img {
+    width: 200px;
+    height: 200px;
+    border-radius: 10px;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+/* Scientific Committee Section */
+.scientific-committee-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    background-color: white; /* Remove unwanted background color */
+    padding: 30px;
+    border-radius: 10px;
+    margin: 20px 0;
+    flex-wrap: nowrap;
+}
+
+/* Left Side: Member Profiles */
+.left-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 55%;
+}
+
+/* Individual Member Box (Same for All) */
+.member-box, .additional-member-box {
+    background: transparent;
+    padding: 20px;
+    border-radius: 10px;
+    /* box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); */
+    text-align: center;
+    width: 250px; /* Ensure all containers are equal in size */
+}
+
+.member-box img, .additional-member-box img {
+    width: 200px;
+    height: 200px;
+    border-radius: 10px;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+/* 4 Photos in a 2x2 Grid */
+.multi-member-box {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    background: transparent;
+    padding: 15px;
+    border-radius: 10px;
+    /* box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); */
+    width: 250px;
+    margin-top: 20px;
+}
+
+/* Smaller Images for 4-Person Container */
+.multi-member-box img {
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+/* Last 2 Photos (Now Below the 4-Photo Section) */
+.additional-members {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    margin-top: 20px;
+} 
+
+/* Right Side: Committee List (Only One) */
+.scientific-committee {
+    width: 40%;
+    text-align: center;
+    align-self: flex-start;
+}
+/* Updated CSS file with red background removed */
+
+/* General styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: white; /* Removed red background */
+}
+
+/* Committee section styling */
+.committee-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+    background-color: transparent; /* Removed red background */
+}
+
+.card {
+    width: 250px;
+    background-color: white;
+    border-radius: 10px;
+    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); */
+    padding: 20px;
+    text-align: center;
+}
+
+.card img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.card h3 {
+    margin: 10px 0;
+    font-size: 18px;
+}
+
+.card p {
+    font-size: 14px;
+    color: gray;
+}
+.scientific-committee-box {
+    /* background-color: #f8f9fa; Light grey background (change as needed) */
+    padding: 20px;
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    width: 100%;
+    text-align: right;
+    background-color: navy;
+}
+.scientific-committee{
+    background-color: navy;
+}
+.scientific-committee-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 30px;
+    border-radius: 10px;
+    margin: 20px 0;
+}
+
+/* Left Side: Member Photos */
+.scientific-members {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 50%;
+    gap: 15px;
+}
+
+.scientific-members img {
+    width: 200px;
+    height: 200px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+/* 4 Photos in One Box */
+.multi-member-box {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+/* Right Side: Scientific Committee (One Container) */
+.scientific-committee-box {
+    background-color: navy;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 40%;
+    text-align: center;
+}
+/* Left Side: Member Photos with Names Below */
+.scientific-members {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 50%;
+    gap: 15px;
+}
+
+.member {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.member img {
+    width: 200px;
+    height: 200px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.member p {
+    margin-top: 5px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* 4 Photos in One Box */
+.multi-member-box {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+/* Right Side: Scientific Committee (One Container) */
+.scientific-committee-box {
+    background-color: navy;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 40%;
+    text-align: center;
+}
+.scientific-members h3,  
+.scientific-members p {  
+    color: black !important;  
+    font-size: 16px;  
+    font-weight: bold;  
+    text-align: center;  
+    margin-top: 5px; /* Keeps spacing uniform */  
+}
+/* 🟢 Keep Photos Fixed in Place */
+.scientific-members img {
+    display: block;
+    margin: 10px auto;
+}
+
+/* 🟢 Move Only the Details (Text) from Left */
+.scientific-members h3, 
+.scientific-members p {
+    transform: translateX(-100%);
+    opacity: 0;
+    transition: transform 1s ease-out, opacity 1s ease-out;
+}
+
+/* When in View, Slide Text to Its Position */
+.show .scientific-members h3,
+.show .scientific-members p {
+    transform: translateX(0);
+    opacity: 1;
+}
+/* Keep Photos Fixed */
+.scientific-members img {
+    display: block;
+    margin: 10px auto;
+}
+
+/* Move Only the Details (Text) from Left */
+.scientific-members h3, 
+.scientific-members p {
+    transform: translateX(-100%);
+    opacity: 0;
+    transition: transform 1s ease-out, opacity 1s ease-out;
+}
+
+/* When in View, Slide Text to Its Position */
+.show .scientific-members h3,
+.show .scientific-members p {
+    transform: translateX(0);
+    opacity: 1;
+}
+/* Keep Photos Fixed */
+.scientific-members img {
+    display: block;
+    margin: 10px auto;
+}
+
+/* Move Only the Details (Text) from Left */
+.member-details {
+    transform: translateX(-100%);
+    opacity: 0;
+    transition: transform 1s ease-out, opacity 1s ease-out;
+}
+
+/* When in View, Slide Text to Its Position */
+.show .member-details {
+    transform: translateX(0);
+    opacity: 1;
+}
+/* Details below images slide in from the left */
+.member-details {
+    transform: translateX(-100%);
+    opacity: 0;
+    transition: transform 1s ease-out, opacity 1s ease-out;
+}
+
+/* Once visible, move to its original position */
+.member-box:hover .member-details {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+/* Scientific Committee Names Slide in from Right */
+.scientific-committee-box ul li {
+    transform: translateX(100%);
+    opacity: 0;
+    transition: transform 1s ease-out, opacity 1s ease-out;
+}
+
+/* When the section is in view, names slide into place */
+.scientific-committee-box.show ul li {
+    transform: translateX(0);
+    opacity: 1;
+}
+/* Keep Photos & Details Normal */
+.member-box {
+    position: relative;
+    text-align: center;
+}
+
+/* ✅ Remove Animation for Now (Make Details Always Visible) */
+.left-section {
+    transform: none !important;
+    opacity: 1 !important;
+}
+/* 🟢 Keep Scientific Committee on Right */
+.scientific-committee-box {
+    width: 40%;
+    background-color: navy;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+/* 🟢 Group Photos in Rows */
+.photo-group {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+/* 🟢 Keep Photos Fixed */
+.member-box {
+    position: relative;
+    text-align: center;
+}
+
+/* 🟢 Make Sure Details Are Visible */
+.member-details {
+    transform: translateX(-100%);
+    opacity: 1 !important;
+    display: block !important;
+}
+
+/* ✅ When in View, Slide Text to Its Position */
+.show .member-details {
+    transform: translateX(0);
+}
+/* 🟢 Reduce Size of Images in Second Container */
+.photo-group:nth-child(2) .member-box img {
+    width: 120px;  /* ✅ Smaller size */
+    height: 120px;
+}
+
+/* 🟢 Reduce Gap Between 4 Photos */
+.photo-group:nth-child(2) {
+    gap: 10px; /* ✅ Decrease space between photos */
+}
+
+
+/* 🟢 Increase Text Animation Speed */
+.member-details {
+    transform: translateX(-100%);
+    opacity: 0;
+    transition: transform 0.5s ease-out, opacity 0.5s ease-out;  /* ✅ Faster Animation */
+}
+
+/* ✅ When in View, Slide Text to Its Position */
+.show .member-details {
+    transform: translateX(0);
+    opacity: 1;
+}
+/* 🟢 Reduce Size of Images in Second Container */
+.photo-group:nth-child(2) .member-box img {
+    width: 200px;  /* ✅ Keep size small */
+    height: 200px;
+}
+
+/* 🟢 Reduce Gap & Center Photos */
+.photo-group:nth-child(2) {
+    display: flex;
+    justify-content: center;  /* ✅ Ensures all photos are in the center */
+    gap: 10px;  /* ✅ Reduces spacing between photos */
+    flex-wrap: wrap;  /* ✅ Prevents overflow issues */
+    max-width: 80%;  /* ✅ Ensures photos stay within safe area */
+    margin: 0 auto;  /* ✅ Centers the group properly */
+}
+/* 🟢 Ensure Details Appear with Photos */
+.member-details {
+    transform: translateX(0) !important;  /* ✅ Remove sliding effect */
+    opacity: 1 !important;  /* ✅ Ensure visibility */
+    position: relative;
+    display: block !important;  /* ✅ Make sure it's always shown */
+}
+/* 🟢 Speed Up Scientific Committee Text Animation */
+.scientific-committee-box ul li {
+    transform: translateX(100%);
+    opacity: 0;
+    transition: transform 0.5s ease-out, opacity 0.5s ease-out;  /* ✅ Faster animation */
+}
+
+/* ✅ When in View, Slide Names to Their Position */
+.show .scientific-committee-box ul li {
+    transform: translateX(0);
+    opacity: 1;
+}
+.scientific-committee-box.show ul li {
+    transform: translateX(0);
+    opacity: 1;
+}

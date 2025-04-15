@@ -1,0 +1,78 @@
+.paper-form-container {
+    max-width: 70vw;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #f9f9f9;
+}
+
+.paper-input {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.paper-file-input {
+    margin: 10px 0;
+}
+.registration-heading3{
+    padding-left: 87px;
+}
+.paper-submit-btn {
+    width: 100%;
+    padding: 12px;
+    background:  #0056b3;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.paper-submit-btn:hover {
+    background: #0056b3;
+}
+.about1 {
+    width: 80%;
+    margin: auto;
+    padding: 20px;
+}
+.about1 p{
+    color:#2C3E50;
+    font-size: 20px;
+    line-height: 30px;
+}
+.about1 .section-title {
+    color:#0056b3;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+.headabout1{
+    margin: 30px 0px;
+    color:#0056b3;
+}
+.registration-heading3 {
+    text-align: start;
+    padding: 20px 0px;
+    padding-left: 40px;
+    font-size: 24px;
+    font-weight: bold;
+    background: linear-gradient(to right, #f0f0f0, #9edaeb);
+    color:#0056b3    ;
+}
+
+@media (max-width: 768px) {
+    .registration-heading3{
+        font-size: 20px;
+    }
+}
+.footer-bottom {
+    text-align: center;
+    margin-top: 20px;
+    padding: 10px;
+    background: white;
+    color: black;
+}
