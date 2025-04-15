@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Bar</title>
+    <title>Contact - International Conference</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
     <link rel="stylesheet" href="styles/styles.css"> 
     <link rel="stylesheet" href="styles/contact.css"> 
 </head>
 <body>
-<!-- contact-bar -->
+    <!-- Contact Bar -->
     <div class="contact-bar">
-        <a href="mailto:yourmail@gmail.com" id="email">iccingc@svcet.in</a>
-        <a href="https://wa.me/1234567890" target="_blank" id="whatsapp"><span class="phone-icon">📞</span>
-            9597202553
+        <a href="mailto:iccingc@svcet.in" id="email">iccingc@svcet.in</a>
+        <a href="https://wa.me/9597202553" target="_blank" id="whatsapp">
+            <span class="phone-icon">📞</span>9597202553
         </a>
     </div>
-    <!-- conference-section -->
+
+    <!-- Conference Header -->
     <div class="conference-section">
         <div class="logo-container">
             <a href="#">
@@ -26,16 +26,17 @@
         </div>
 
         <div class="conference-details">
-            <p><b><strong>1<sup>st</sup></strong>International Conference on</b></p>
-            <p class="highlight show"><strong>INTERNATIONAL CONFERENCE ON COMPUTATIONAL INTELLIGENCE AND NEXT GENERATION COMMUNICATION</strong></p>
-            <p>25<sup>th</sup> – 26<sup>th</sup>  July 2025</p>
+            <p><b><strong>1<sup>st</sup></strong> International Conference on</b></p>
+            <p class="highlight show"><strong>COMPUTATIONAL INTELLIGENCE AND NEXT GENERATION COMMUNICATION</strong></p>
+            <p>25<sup>th</sup> – 26<sup>th</sup> July 2025</p>
         </div>
 
         <div class="extra-logo-container">
-            <img src="/images/flogo.jpg" alt="Footer Logo">
+            <img src="/images/flogo.jpg" alt="Institution Logo">
         </div>
     </div>
-    <!-- Navbar -->
+
+    <!-- Navigation -->
     <nav class="navbar">
         <div class="logo"></div>
         <ul class="nav-links">
@@ -62,68 +63,48 @@
             <span></span>
         </div>
     </nav>
-    <!-- Registartion Heading -->
-    <div class="registration-heading">
-        <h2>CONTACT</h2>
-    </div>
-     <!-- Contact Section -->
-<div class="contact-container">
-    <!-- <h2 class="contact-heading">CONTACT</h2> -->
-    
-    <div class="contact-content">
-               <form id="userContactForm" class="contact-form" method="POST" action="http://localhost:5000/api/contact/contacts">
-            <input type="text" id="fullName" name="user_name" placeholder="Your Name">
-            <input type="email" id="userEmail" name="user_email" placeholder="Your Email" required>
-            <input type="tel" id="phoneNumber" name="user_phone" placeholder="Your Phone Number">
-            <textarea id="userMessage" name="user_message" placeholder="Your Message"></textarea>
-            <button type="submit" class="submit-btn">SUBMIT</button>
-        </form>
-        
-        <!-- Contact Info Box -->
-        <div class="contact-info">
-            <h3>Contact :</h3>
-            <p><b>Dr.A.Anupriya,</b>,<br>
-               Convener-ICCIGC-2025,<br>
-               Associate Professor,<br>
-               Department of Information Technology</p>
 
-            <p><i class="fas fa-phone-alt"></i><span class="h"><b>Phone Number</b></span><br>+919597202553</p>
-            <p><i class="fas fa-envelope"></i><span class="h"><b>Phone Number</b></span><br>iccingc@svcet.in</p>
-            <p><i class="fas fa-map-marker-alt"></i><span class="h"><b>Phone Number</b></span><br>
-               Sri Venkateswara College of Engineering & Technology (SVCET),<br>
-               R.V.S. Nagar, Tirupati Road, Chittoor – 517127, Andhra Pradesh, India.</p>
+    <!-- Contact Section -->
+    <div class="contact-container">
+        <div class="contact-content">
+            <form id="contactForm" class="contact-form">
+                <input type="text" name="name" placeholder="Your Name" required>
+                <input type="email" name="email" placeholder="Your Email" required>
+                <input type="tel" name="phone" placeholder="Your Phone Number">
+                <textarea name="message" placeholder="Your Message" required></textarea>
+                <button type="submit" class="submit-btn">SUBMIT</button>
+            </form>
+
+            <!-- Contact Information -->
+            <div class="contact-info">
+                <h3>Contact Details:</h3>
+                <p><b>Dr. A. Anupriya,</b><br>
+                   Convener-ICCIGC-2025,<br>
+                   Associate Professor,<br>
+                   Department of Information Technology</p>
+
+                <p><i class="fas fa-phone-alt"></i> <b>Phone:</b><br>+91 9597202553</p>
+                <p><i class="fas fa-envelope"></i> <b>Email:</b><br>iccingc@svcet.in</p>
+                <p><i class="fas fa-map-marker-alt"></i> <b>Address:</b><br>
+                   Sri Venkateswara College of Engineering & Technology (SVCET),<br>
+                   R.V.S. Nagar, Tirupati Road, Chittoor – 517127,<br>
+                   Andhra Pradesh, India.</p>
+            </div>
         </div>
     </div>
-</div>
 
-     
-    <!-- footer -->
-    <footer id="footer" class="footer">
-        <div class="footer-container" id="footer-container">
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
             <!-- Important Dates -->
             <div class="footer-section">
                 <h3>Important Dates</h3>
                 <table>
-                    <tr>
-                        <td class="highlight">Full Paper submission</td>
-                        <td class="highlight">April 30<sup>st</sup> 2025</td>
-                    </tr>
-                    <tr>
-                        <td>Notification Of Acceptance</td>
-                        <td>May 30<sup>th</sup> 2025</td>
-                    </tr>
-                    <tr>
-                        <td class="highlight">Camera Ready Papper Due</td>
-                        <td class="highlight">June 20<sup>st</sup> 2025</td>
-                    </tr>
-                    <tr>
-                        <td>Registration Open</td>
-                        <td>July 10<sup>st</sup> 2025</td>
-                    </tr>
-                    <tr>
-                        <td class="highlight">Conference Date</td>
-                        <td class="highlight">July 25<sup>th</sup> & 26<sup>th</sup> 2025</td>
-                    </tr>
+                    <tr><td>Full Paper submission</td><td>April 30<sup>th</sup> 2025</td></tr>
+                    <tr><td>Notification of Acceptance</td><td>May 30<sup>th</sup> 2025</td></tr>
+                    <tr><td>Camera Ready Paper</td><td>June 20<sup>th</sup> 2025</td></tr>
+                    <tr><td>Registration Open</td><td>July 10<sup>th</sup> 2025</td></tr>
+                    <tr><td>Conference Dates</td><td>July 25-26<sup>th</sup> 2025</td></tr>
                 </table>
             </div>
 
@@ -131,11 +112,10 @@
             <div class="footer-section">
                 <h3>Quick Links</h3>
                 <ul>
-                    <a href="/home.html"><li>Home</li></a>
-                    <a href="/abouutus.html"></a>
-                     <a href="/call.html"><li>Call For Papers</li></a>
-                    <a href="/registration.html"><li>Registration</li></a>
-                     <a href="/c1.html"><li>Committees</li></a>
+                    <li><a href="/home.html">Home</a></li>
+                    <li><a href="/call.html">Call For Papers</a></li>
+                    <li><a href="/registration.html">Registration</a></li>
+                    <li><a href="/c1.html">Committees</a></li>
                 </ul>
             </div>
 
@@ -143,16 +123,19 @@
             <div class="footer-section">
                 <h3>Downloads</h3>
                 <ul>
-                    <li>Brochure</li>
-                    <li>Guide for authors</li>
-                    <a href="/registration.html"><li>Registration</li></a> 
+                    <li><a href="#">Brochure</a></li>
+                    <li><a href="#">Author Guidelines</a></li>
+                    <li><a href="/registration.html">Registration Form</a></li>
                 </ul>
             </div>
         </div>
+        
         <div class="footer-bottom">
-            <p>© Copyright ICSMSM. All rights reserved.</p>
-            <p>Designed by <span class="designer">AFIYA AFNAIN</span></p>
+            <p>© 2025 ICCIGC. All rights reserved.</p>
+            <p>Designed by <span class="designer">Conference Team</span></p>
         </div>
+    </footer>
+
     <script src="scripts/script.js"></script>
 </body>
 </html>
