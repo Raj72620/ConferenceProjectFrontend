@@ -21,52 +21,71 @@ function initializeAnimations() {
 
 // Form Handlers
 function setupFormHandlers() {
-    // Registration Form
-    document.getElementById("registrationForm")?.addEventListener("submit", async (event) => {
-        event.preventDefault();
-        const form = event.target;
-        
+    // Registration Form Handler
+    document.getElementById("registrationForm")?.addEventListener("submit", handleRegistrationSubmission);
+
+    // Contact Form Handler
+    document.getElementById("contactForm")?.addEventListener("submit", handleContactSubmission);
+}
+
+async function handleRegistrationSubmission(event) {
+    event.preventDefault();
+    const form = event.target;
+    
+    try {
+        // Validate required fields
+        if (!form.elements.name.value?.trim() || 
+            !form.elements.paperId.value?.trim() || 
+            !form.elements.amountPaid.value?.trim()) {
+            showFeedback(false, "Name, Paper ID, and Amount Paid are required!");
+            return;
+        }
+
+        // Prepare form data with null checks
         const formData = {
             name: form.elements.name.value.trim(),
             paperId: form.elements.paperId.value.trim(),
-            paperTitle: form.elements.paperTitle.value.trim(),
+            paperTitle: form.elements.paperTitle?.value?.trim() || "",
             institution: form.elements.institution.value.trim(),
             phone: form.elements.phone.value.trim(),
             email: form.elements.email.value.trim(),
             amountPaid: parseFloat(form.elements.amountPaid.value),
-            journalName: form.elements.journalName.value.trim(),
+            journalName: form.elements.journalName?.value?.trim() || "",
             feeType: form.elements.feeType.value.trim(),
             transactionId: form.elements.transactionId.value.trim(),
             date: form.elements.date.value
         };
 
-        if (!formData.name || !formData.paperId || !formData.amountPaid) {
-            showFeedback(false, "Please fill all required fields");
-            return;
+        console.log("Submitting registration:", formData);
+
+        const response = await fetch(`${API_BASE_URL}/api/registrations/register`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(formData)
+        });
+
+        // Handle empty responses
+        const responseText = await response.text();
+        const result = responseText ? JSON.parse(responseText) : {};
+
+        if (!response.ok) {
+            throw new Error(result.message || `Registration failed (${response.status})`);
         }
 
-        try {
-            const response = await fetch(`${API_BASE_URL}/api/registrations/register`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(formData)
-            });
+        showFeedback(true, result.message || "Registration successful!");
+        form.reset();
 
-            const result = await response.json();
-            if (!response.ok) throw new Error(result.message || "Registration failed");
+    } catch (error) {
+        console.error("Registration Error:", error);
+        showFeedback(false, error.message || "Registration failed. Please try again.");
+    }
+}
 
-            showFeedback(true, result.message || "Registration successful!");
-            form.reset();
-        } catch (error) {
-            console.error("Registration Error:", error);
-            showFeedback(false, error.message || "Registration failed. Please try again.");
-        }
-    });
-
-    // Contact Form
-    document.getElementById("contactForm")?.addEventListener("submit", async (event) => {
-        event.preventDefault();
-        const form = event.target;
+async function handleContactSubmission(event) {
+    event.preventDefault();
+    const form = event.target;
+    
+    try {
         const formData = {
             name: form.elements.name.value.trim(),
             email: form.elements.email.value.trim(),
@@ -75,37 +94,44 @@ function setupFormHandlers() {
         };
 
         if (!formData.name || !formData.email || !formData.message) {
-            showFeedback(false, "Please fill required fields");
+            showFeedback(false, "Please fill all required fields");
             return;
         }
 
-        try {
-            const response = await fetch(`${API_BASE_URL}/api/contact/contact`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(formData)
-            });
+        console.log("Submitting contact form:", formData);
 
-            const result = await response.json();
-            if (!response.ok) throw new Error(result.message || "Message failed");
-            
-            showFeedback(true, "Message sent successfully!");
-            form.reset();
-        } catch (error) {
-            console.error("Contact Error:", error);
-            showFeedback(false, error.message || "Message failed");
+        const response = await fetch(`${API_BASE_URL}/api/contact/contact`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(formData)
+        });
+
+        const result = await response.json();
+        
+        if (!response.ok) {
+            throw new Error(result.message || `Message failed (${response.status})`);
         }
-    });
+
+        showFeedback(true, result.message || "Message sent successfully!");
+        form.reset();
+    } catch (error) {
+        console.error("Contact Error:", error);
+        showFeedback(false, error.message || "Failed to send message");
+    }
 }
 
 // Animation Functions
 function createObserver(selector, animationClass, threshold = 0.2) {
     const elements = document.querySelectorAll(selector);
     if (!elements.length) return;
+    
     const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => entry.target.classList.toggle(animationClass, entry.isIntersecting));
+        entries.forEach(entry => {
+            entry.target.classList.toggle(animationClass, entry.isIntersecting);
+        });
     }, { threshold });
-    elements.forEach(el => observer.observe(el));
+
+    elements.forEach(element => observer.observe(element));
 }
 
 function setupScrollReveal() {
@@ -117,7 +143,10 @@ function setupScrollReveal() {
             }
         });
     }, { threshold: 0.2 });
-    document.querySelectorAll(".animate-on-scroll").forEach(el => observer.observe(el));
+
+    // Add registration page elements
+    document.querySelectorAll(".registration-page, .fee-table, .second, .registration-form")
+           .forEach(el => observer.observe(el));
 }
 
 // UI Functions
