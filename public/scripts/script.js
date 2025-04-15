@@ -10,101 +10,106 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Animation Initialization
 function initializeAnimations() {
-    // Navigation and Contact Bars
     document.querySelector(".contact-bar")?.classList.add("show");
     document.querySelector(".navbar")?.classList.add("show");
-
-    // Intersection Observers
     createObserver(".footer-section", "animate-footer");
     createObserver(".conference-section", "animate-section");
     createObserver(".contact-info", "animate-contact", 0.3);
     createObserver(".contact-container", "animate-contact");
-    createObserver(".scientific-committee-box", "show", 0.5);
-    createObserver(".member-details, .scientific-committee-box ul li", "show", 0.3);
-    
-    // Scroll-based Reveal
     setupScrollReveal();
 }
 
 // Form Handlers
 function setupFormHandlers() {
     // Registration Form
-    document.querySelector(".registration-form")?.addEventListener("submit", async (event) => {
-        await handleFormSubmission(event, `${API_BASE_URL}/api/registrations/register`, "Registration");
-    });
-
-    // Contact Form (Updated)
-    document.getElementById("contactForm")?.addEventListener("submit", async (event) => {
-        await handleContactSubmission(event);
-    });
-
-    // Paper Submission Form
-    document.getElementById("paperSubmissionForm")?.addEventListener("submit", async (event) => {
-        await handleFormSubmission(event, `${API_BASE_URL}/submit/papersubmit`, "Paper Submission", true);
-    });
-}
-
-// Contact Form Handler (New)
-async function handleContactSubmission(event) {
-    event.preventDefault();
-    const form = event.target;
-    
-    const formData = {
-        name: form.elements.name.value.trim(),
-        email: form.elements.email.value.trim(),
-        phone: form.elements.phone?.value.trim() || "", // Optional field
-        message: form.elements.message.value.trim()
-    };
-
-    // Validate required fields
-    if (!formData.name || !formData.email || !formData.message) {
-        showFeedback(false, "Please fill in Name, Email, and Message fields!");
-        return;
-    }
-
-    try {
-        const response = await fetch(`${API_BASE_URL}/api/contact/contact`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(formData)
-        });
-
-        const result = await response.json();
+    document.getElementById("registrationForm")?.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const form = event.target;
         
-        if (!response.ok) {
-            throw new Error(result.message || "Message submission failed");
+        const formData = {
+            name: form.elements.name.value.trim(),
+            paperId: form.elements.paperId.value.trim(),
+            paperTitle: form.elements.paperTitle.value.trim(),
+            institution: form.elements.institution.value.trim(),
+            phone: form.elements.phone.value.trim(),
+            email: form.elements.email.value.trim(),
+            amountPaid: parseFloat(form.elements.amountPaid.value),
+            journalName: form.elements.journalName.value.trim(),
+            feeType: form.elements.feeType.value.trim(),
+            transactionId: form.elements.transactionId.value.trim(),
+            date: form.elements.date.value
+        };
+
+        if (!formData.name || !formData.paperId || !formData.amountPaid) {
+            showFeedback(false, "Please fill all required fields");
+            return;
         }
 
-        showFeedback(true, result.message || "Message sent successfully!");
-        form.reset();
-    } catch (error) {
-        console.error("Contact Error:", error);
-        showFeedback(false, error.message || "Failed to send message");
-    }
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/registrations/register`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(formData)
+            });
+
+            const result = await response.json();
+            if (!response.ok) throw new Error(result.message || "Registration failed");
+
+            showFeedback(true, result.message || "Registration successful!");
+            form.reset();
+        } catch (error) {
+            console.error("Registration Error:", error);
+            showFeedback(false, error.message || "Registration failed. Please try again.");
+        }
+    });
+
+    // Contact Form
+    document.getElementById("contactForm")?.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const form = event.target;
+        const formData = {
+            name: form.elements.name.value.trim(),
+            email: form.elements.email.value.trim(),
+            phone: form.elements.phone.value.trim(),
+            message: form.elements.message.value.trim()
+        };
+
+        if (!formData.name || !formData.email || !formData.message) {
+            showFeedback(false, "Please fill required fields");
+            return;
+        }
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/contact/contact`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(formData)
+            });
+
+            const result = await response.json();
+            if (!response.ok) throw new Error(result.message || "Message failed");
+            
+            showFeedback(true, "Message sent successfully!");
+            form.reset();
+        } catch (error) {
+            console.error("Contact Error:", error);
+            showFeedback(false, error.message || "Message failed");
+        }
+    });
 }
 
-// Reusable Animation Functions
+// Animation Functions
 function createObserver(selector, animationClass, threshold = 0.2) {
     const elements = document.querySelectorAll(selector);
     if (!elements.length) return;
-
     const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            entry.target.classList.toggle(animationClass, entry.isIntersecting);
-        });
+        entries.forEach(entry => entry.target.classList.toggle(animationClass, entry.isIntersecting));
     }, { threshold });
-
-    elements.forEach(element => observer.observe(element));
+    elements.forEach(el => observer.observe(el));
 }
 
 function setupScrollReveal() {
-    const revealElements = [
-        { selector: "h1, p", threshold: 0.85 },
-        { selector: ".registration-page, .second, h2, .registration-form", threshold: 0.85 },
-        { selector: ".update", threshold: 0.85 }
-    ];
-
-    const revealObserver = new IntersectionObserver((entries) => {
+    const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.style.opacity = "1";
@@ -112,45 +117,16 @@ function setupScrollReveal() {
             }
         });
     }, { threshold: 0.2 });
-
-    revealElements.forEach(({ selector }) => {
-        document.querySelectorAll(selector).forEach(el => revealObserver.observe(el));
-    });
+    document.querySelectorAll(".animate-on-scroll").forEach(el => observer.observe(el));
 }
 
-// General Form Handler
-async function handleFormSubmission(event, endpoint, actionName, isFileUpload = false) {
-    event.preventDefault();
-    const form = event.target;
-    const formData = isFileUpload ? new FormData(form) : Object.fromEntries(new FormData(form));
-
-    try {
-        form.querySelector('button').disabled = true;
-        const response = await fetch(endpoint, {
-            method: "POST",
-            headers: isFileUpload ? undefined : { "Content-Type": "application/json" },
-            body: isFileUpload ? formData : JSON.stringify(formData)
-        });
-
-        const result = await response.json();
-        
-        if (!response.ok) {
-            throw new Error(result.message || `${actionName} failed`);
-        }
-
-        showFeedback(true, result.message || `${actionName} Successful!`);
-        form.reset();
-    } catch (error) {
-        console.error(`${actionName} Error:`, error);
-        showFeedback(false, error.message || `${actionName} Failed. Please try again.`);
-    } finally {
-        form.querySelector('button').disabled = false;
-    }
-}
-
-// UI Feedback
+// UI Functions
 function showFeedback(isSuccess, message) {
-    alert(message); // Replace with toast/notification UI if available
+    const alertBox = document.createElement("div");
+    alertBox.className = `feedback ${isSuccess ? "success" : "error"}`;
+    alertBox.textContent = message;
+    document.body.appendChild(alertBox);
+    setTimeout(() => alertBox.remove(), 3000);
 }
 
 // Carousel Functionality
@@ -169,17 +145,14 @@ function initializeCarousel() {
         slides[index].classList.add('active');
     };
 
-    const startAutoSlide = () => {
-        autoSlideInterval = setInterval(() => updateSlide(index + 1), 3000);
-    };
-
-    window.nextSlide = () => { updateSlide(index + 1); resetAutoSlide() };
-    window.prevSlide = () => { updateSlide(index - 1); resetAutoSlide() };
+    const startAutoSlide = () => autoSlideInterval = setInterval(() => updateSlide(index + 1), 3000);
     const resetAutoSlide = () => {
         clearInterval(autoSlideInterval);
         startAutoSlide();
     };
 
+    window.nextSlide = () => { updateSlide(index + 1); resetAutoSlide() };
+    window.prevSlide = () => { updateSlide(index - 1); resetAutoSlide() };
     startAutoSlide();
 }
 
@@ -188,7 +161,6 @@ function toggleMenu() {
     document.querySelector('.nav-links').classList.toggle('active');
 }
 
-// Image Zoom Effect
 window.onload = () => {
     document.querySelector(".container img")?.classList.add("zoom");
 };
