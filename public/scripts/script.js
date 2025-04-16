@@ -7,6 +7,27 @@ document.addEventListener("DOMContentLoaded", () => {
     setupFormHandlers();
     initializeCarousel();
 });
+// Helper Functions (MUST COME FIRST!)
+function showFieldError(input, message) {
+    const errorDiv = document.createElement("div");
+    errorDiv.className = "field-error";
+    errorDiv.textContent = message;
+    errorDiv.style.color = "red";
+    errorDiv.style.fontSize = "0.8rem";
+    input.parentNode.appendChild(errorDiv);
+}
+
+function clearValidationErrors() {
+    document.querySelectorAll(".field-error").forEach(el => el.remove());
+}
+
+function showFeedback(isSuccess, message) {
+    const alertBox = document.createElement("div");
+    alertBox.className = `feedback ${isSuccess ? "success" : "error"}`;
+    alertBox.textContent = message;
+    document.body.appendChild(alertBox);
+    setTimeout(() => alertBox.remove(), 3000);
+}
 
 // Animation Initialization
 function initializeAnimations() {
