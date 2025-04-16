@@ -55,15 +55,15 @@ function setupFormHandlers() {
     document.getElementById("paperSubmissionForm")?.addEventListener("submit", handlePaperSubmission);
 }
 
+
+
 async function handleRegistrationSubmission(event) {
     event.preventDefault();
     const form = event.target;
     
     try {
-        // Clear previous errors
         document.querySelectorAll('.invalid').forEach(el => el.classList.remove('invalid'));
 
-        // Validate required fields
         const requiredFields = [
             'name', 'paperId', 'paperTitle', 'institution',
             'phone', 'email', 'amount', 'fee_category',
@@ -72,28 +72,31 @@ async function handleRegistrationSubmission(event) {
 
         let isValid = true;
 
+        // Validate required fields
         requiredFields.forEach(field => {
             const input = form.elements[field];
-            if (!input.value.trim()) {
-                input.classList.add('invalid');
+            if (!input || !input.value.trim()) {
+                if (input) input.classList.add('invalid');
                 isValid = false;
             }
         });
 
         // Additional validations
-        const amount = parseFloat(form.elements.amountPaid.value);
-        if (isNaN(amount) || amount < 1) {
-            form.elements.amountPaid.classList.add('invalid');
+        const amountInput = form.elements.amount;
+        if (!amountInput || isNaN(amountInput.value) || amountInput.value < 1) {
+            if (amountInput) amountInput.classList.add('invalid');
             isValid = false;
         }
 
-        if (!/^\d{10}$/.test(form.elements.phone.value.trim())) {
-            form.elements.phone.classList.add('invalid');
+        const phoneInput = form.elements.phone;
+        if (!phoneInput || !/^\d{10}$/.test(phoneInput.value.trim())) {
+            if (phoneInput) phoneInput.classList.add('invalid');
             isValid = false;
         }
 
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.elements.email.value.trim())) {
-            form.elements.email.classList.add('invalid');
+        const emailInput = form.elements.email;
+        if (!emailInput || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value.trim())) {
+            if (emailInput) emailInput.classList.add('invalid');
             isValid = false;
         }
 
@@ -102,7 +105,7 @@ async function handleRegistrationSubmission(event) {
             return;
         }
 
-        // Prepare EXACT data format backend expects
+        // Prepare data with null checks
         const formData = {
             name: form.elements.name.value.trim(),
             paperId: form.elements.paperId.value.trim(),
@@ -114,45 +117,39 @@ async function handleRegistrationSubmission(event) {
             fee_category: form.elements.fee_category.value.trim(),
             transaction_id: form.elements.transaction_id.value.trim(),
             registration_date: new Date(form.elements.registration_date.value).toISOString(),
-            journalName: form.elements.journalName?.value?.trim() || ""
+            journalName: form.elements.journalName ? form.elements.journalName.value.trim() : ""
         };
-        // Add optional fields if they exist
-        if (form.elements.paperTitle?.value?.trim()) {
-            formData.paper_title = form.elements.paperTitle.value.trim();
-        }
-        if (form.elements.journalName?.value?.trim()) {
-            formData.journal = form.elements.journalName.value.trim();
-        }
-
-        // Debug: Log final payload
-        console.log("Final Submission Data:", formData);
 
         // API call with timeout
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000);
+
         const response = await fetch(`${API_BASE_URL}/api/registrations/register`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(formData),
-            signal: AbortSignal.timeout(10000)
+            signal: controller.signal
         });
 
+        clearTimeout(timeoutId);
         const result = await response.json();
-        
+
         if (!response.ok) {
             console.error("Backend Response:", result);
-            throw new Error(result.error || result.message || "Registration failed. Please check your data.");
+            throw new Error(result.error || "Registration failed");
         }
 
-        showFeedback(true, "✅ Registration successful! Confirmation email sent");
+        showFeedback(true, "✅ Registration successful!");
         form.reset();
 
     } catch (error) {
         console.error("Registration Error:", error);
-        showFeedback(false, error.name === 'AbortError' 
-            ? "⏳ Request timed out. Please try again." 
-            : error.message || "❌ Server error. Please try again later."
-        );
+        showFeedback(false, error.message || "Registration failed. Please try again.");
     }
 }
+
+
+
 
 async function handleContactSubmission(event) {
     event.preventDefault();
