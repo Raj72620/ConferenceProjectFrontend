@@ -199,15 +199,6 @@ function setupScrollReveal() {
            .forEach(el => observer.observe(el));
 }
 
-// UI Functions
-function showFeedback(isSuccess, message) {
-    const alertBox = document.createElement("div");
-    alertBox.className = `feedback ${isSuccess ? "success" : "error"}`;
-    alertBox.textContent = message;
-    document.body.appendChild(alertBox);
-    setTimeout(() => alertBox.remove(), 3000);
-}
-
 // Carousel Functionality
 function initializeCarousel() {
     const wrapper = document.querySelector('.carousel-wrapper');
