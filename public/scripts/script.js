@@ -1,110 +1,42 @@
 // Global Configuration
 const API_BASE_URL = "https://conferenceproject-backend.onrender.com";
 
-// DOM Ready Handler
 document.addEventListener("DOMContentLoaded", () => {
     initializeAnimations();
     setupFormHandlers();
     initializeCarousel();
 });
 
-// Animation Initialization
+function showFeedback(isSuccess, message) {
+    const alertBox = document.createElement("div");
+    alertBox.className = `feedback ${isSuccess ? "success" : "error"}`;
+    alertBox.innerHTML = `<span>${isSuccess ? "✓" : "⚠"}</span><p>${message}</p>`;
+    document.body.appendChild(alertBox);
+    setTimeout(() => alertBox.remove(), 5000);
+}
+
 function initializeAnimations() {
-    // Navigation and Contact Bars
     document.querySelector(".contact-bar")?.classList.add("show");
     document.querySelector(".navbar")?.classList.add("show");
-
-    // Intersection Observers
-    createObserver(".footer-section", "animate-footer");
-    createObserver(".conference-section", "animate-section");
-    createObserver(".contact-info", "animate-contact", 0.3);
-    createObserver(".contact-container", "animate-contact");
-    createObserver(".scientific-committee-box", "show", 0.5);
-    createObserver(".member-details, .scientific-committee-box ul li", "show", 0.3);
     
-    // Scroll-based Reveal
-    setupScrollReveal();
-}
-
-// Form Handlers
-function setupFormHandlers() {
-    // Registration Form
-    document.querySelector(".registration-form")?.addEventListener("submit", async (event) => {
-        await handleFormSubmission(event, `${API_BASE_URL}/api/registrations/register`, "Registration");
-    });
-
-    // Contact Form (Updated)
-    document.getElementById("contactForm")?.addEventListener("submit", async (event) => {
-        await handleContactSubmission(event);
-    });
-
-    // Paper Submission Form
-    document.getElementById("paperSubmissionForm")?.addEventListener("submit", async (event) => {
-        await handleFormSubmission(event, `${API_BASE_URL}/submit/papersubmit`, "Paper Submission", true);
-    });
-}
-
-// Contact Form Handler (New)
-async function handleContactSubmission(event) {
-    event.preventDefault();
-    const form = event.target;
-    
-    const formData = {
-        name: form.elements.name.value.trim(),
-        email: form.elements.email.value.trim(),
-        phone: form.elements.phone?.value.trim() || "", // Optional field
-        message: form.elements.message.value.trim()
-    };
-
-    // Validate required fields
-    if (!formData.name || !formData.email || !formData.message) {
-        showFeedback(false, "Please fill in Name, Email, and Message fields!");
-        return;
-    }
-
-    try {
-        const response = await fetch(`${API_BASE_URL}/api/contact/contact`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(formData)
-        });
-
-        const result = await response.json();
-        
-        if (!response.ok) {
-            throw new Error(result.message || "Message submission failed");
-        }
-
-        showFeedback(true, result.message || "Message sent successfully!");
-        form.reset();
-    } catch (error) {
-        console.error("Contact Error:", error);
-        showFeedback(false, error.message || "Failed to send message");
-    }
-}
-
-// Reusable Animation Functions
-function createObserver(selector, animationClass, threshold = 0.2) {
-    const elements = document.querySelectorAll(selector);
-    if (!elements.length) return;
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            entry.target.classList.toggle(animationClass, entry.isIntersecting);
-        });
-    }, { threshold });
-
-    elements.forEach(element => observer.observe(element));
-}
-
-function setupScrollReveal() {
-    const revealElements = [
-        { selector: "h1, p", threshold: 0.85 },
-        { selector: ".registration-page, .second, h2, .registration-form", threshold: 0.85 },
-        { selector: ".update", threshold: 0.85 }
+    const observers = [
+        { selector: ".footer-section", class: "animate-footer" },
+        { selector: ".conference-section", class: "animate-section" },
+        { selector: ".contact-info", class: "animate-contact", threshold: 0.3 },
+        { selector: ".contact-container", class: "animate-contact" },
+        { selector: ".scientific-committee-box", class: "show", threshold: 0.5 },
+        { selector: ".member-details, .scientific-committee-box ul li", class: "show", threshold: 0.3 }
     ];
 
-    const revealObserver = new IntersectionObserver((entries) => {
+    observers.forEach(({ selector, class: className, threshold = 0.2 }) => {
+        const elements = document.querySelectorAll(selector);
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => entry.target.classList.toggle(className, entry.isIntersecting));
+        }, { threshold });
+        elements.forEach(el => observer.observe(el));
+    });
+
+    const scrollRevealObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.style.opacity = "1";
@@ -113,47 +45,141 @@ function setupScrollReveal() {
         });
     }, { threshold: 0.2 });
 
-    revealElements.forEach(({ selector }) => {
-        document.querySelectorAll(selector).forEach(el => revealObserver.observe(el));
-    });
+    document.querySelectorAll("h1, p, .registration-page, .second, h2, .registration-form, .update")
+           .forEach(el => scrollRevealObserver.observe(el));
 }
 
-// General Form Handler
-async function handleFormSubmission(event, endpoint, actionName, isFileUpload = false) {
+function setupFormHandlers() {
+    document.getElementById("registrationForm")?.addEventListener("submit", handleRegistrationSubmission);
+    document.getElementById("contactForm")?.addEventListener("submit", handleContactSubmission);
+    document.getElementById("paperSubmissionForm")?.addEventListener("submit", handlePaperSubmission);
+}
+
+async function handleRegistrationSubmission(event) {
     event.preventDefault();
     const form = event.target;
-    const formData = isFileUpload ? new FormData(form) : Object.fromEntries(new FormData(form));
+    
+    try {
+        const requiredFields = ['name', 'paperId', 'institution', 'phone', 'email', 'amountPaid', 'feeType', 'transactionId', 'date'];
+        let isValid = true;
+
+        requiredFields.forEach(field => {
+            const input = form.elements[field];
+            input.classList.remove('invalid');
+            if (!input.value.trim()) {
+                input.classList.add('invalid');
+                isValid = false;
+            }
+        });
+
+        if (!isValid) {
+            showFeedback(false, "Please fill all required fields");
+            return;
+        }
+
+        const formData = {
+            name: form.elements.name.value.trim(),
+            paperId: form.elements.paperId.value.trim(),
+            institution: form.elements.institution.value.trim(),
+            phone: form.elements.phone.value.trim(),
+            email: form.elements.email.value.trim(),
+            amountPaid: parseFloat(form.elements.amountPaid.value),
+            feeType: form.elements.feeType.value.trim(),
+            transactionId: form.elements.transactionId.value.trim(),
+            date: new Date(form.elements.date.value).toISOString(),
+            paperTitle: form.elements.paperTitle?.value?.trim() || "",
+            journalName: form.elements.journalName?.value?.trim() || ""
+        };
+
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000);
+
+        const response = await fetch(`${API_BASE_URL}/api/registrations/register`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(formData),
+            signal: controller.signal
+        });
+
+        clearTimeout(timeoutId);
+        const result = await response.json();
+
+        if (!response.ok) {
+            throw new Error(result.error || result.message || "Registration failed. Please check your data.");
+        }
+
+        showFeedback(true, "Registration successful! Confirmation details will be emailed.");
+        form.reset();
+    } catch (error) {
+        console.error("Registration Error:", error);
+        showFeedback(false, error.name === "AbortError" ? "Request timed out. Please try again." : error.message);
+    }
+}
+
+async function handleContactSubmission(event) {
+    event.preventDefault();
+    const form = event.target;
+    const formData = {
+        name: form.elements.name.value.trim(),
+        email: form.elements.email.value.trim(),
+        phone: form.elements.phone.value.trim() || "",
+        message: form.elements.message.value.trim()
+    };
+
+    if (!formData.name || !formData.email || !formData.message) {
+        showFeedback(false, "Name, Email and Message are required");
+        return;
+    }
 
     try {
-        form.querySelector('button').disabled = true;
-        const response = await fetch(endpoint, {
+        const response = await fetch(`${API_BASE_URL}/api/contact`, {
             method: "POST",
-            headers: isFileUpload ? undefined : { "Content-Type": "application/json" },
-            body: isFileUpload ? formData : JSON.stringify(formData)
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(formData)
         });
 
         const result = await response.json();
         
         if (!response.ok) {
-            throw new Error(result.message || `${actionName} failed`);
+            throw new Error(result.error || "Message submission failed");
         }
 
-        showFeedback(true, result.message || `${actionName} Successful!`);
+        showFeedback(true, "Message sent successfully!");
         form.reset();
     } catch (error) {
-        console.error(`${actionName} Error:`, error);
-        showFeedback(false, error.message || `${actionName} Failed. Please try again.`);
+        console.error("Contact Error:", error);
+        showFeedback(false, error.message || "Failed to send message");
+    }
+}
+
+async function handlePaperSubmission(event) {
+    event.preventDefault();
+    const form = event.target;
+    const formData = new FormData(form);
+
+    try {
+        form.querySelector('button').disabled = true;
+        const response = await fetch(`${API_BASE_URL}/submit/papersubmit`, {
+            method: "POST",
+            body: formData
+        });
+
+        const result = await response.json();
+        
+        if (!response.ok) {
+            throw new Error(result.error || "Paper submission failed");
+        }
+
+        showFeedback(true, "Paper submitted successfully!");
+        form.reset();
+    } catch (error) {
+        console.error("Paper Submission Error:", error);
+        showFeedback(false, error.message);
     } finally {
         form.querySelector('button').disabled = false;
     }
 }
 
-// UI Feedback
-function showFeedback(isSuccess, message) {
-    alert(message); // Replace with toast/notification UI if available
-}
-
-// Carousel Functionality
 function initializeCarousel() {
     const wrapper = document.querySelector('.carousel-wrapper');
     const slides = document.querySelectorAll('.carousel-item');
@@ -169,13 +195,16 @@ function initializeCarousel() {
         slides[index].classList.add('active');
     };
 
-    const startAutoSlide = () => {
-        autoSlideInterval = setInterval(() => updateSlide(index + 1), 3000);
+    const startAutoSlide = () => autoSlideInterval = setInterval(() => updateSlide(index + 1), 5000);
+    
+    window.nextSlide = () => {
+        updateSlide(index + 1);
+        clearInterval(autoSlideInterval);
+        startAutoSlide();
     };
 
-    window.nextSlide = () => { updateSlide(index + 1); resetAutoSlide() };
-    window.prevSlide = () => { updateSlide(index - 1); resetAutoSlide() };
-    const resetAutoSlide = () => {
+    window.prevSlide = () => {
+        updateSlide(index - 1);
         clearInterval(autoSlideInterval);
         startAutoSlide();
     };
@@ -183,12 +212,10 @@ function initializeCarousel() {
     startAutoSlide();
 }
 
-// Utility Functions
 function toggleMenu() {
     document.querySelector('.nav-links').classList.toggle('active');
 }
 
-// Image Zoom Effect
 window.onload = () => {
     document.querySelector(".container img")?.classList.add("zoom");
 };
