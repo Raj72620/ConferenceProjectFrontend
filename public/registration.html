@@ -89,7 +89,6 @@
 
         <h2 class="section-title animate-on-scroll">Registration Application Form</h2>
         
-        <!-- Updated Form Fields -->
         <form id="registrationForm" class="registration-form animate-on-scroll">
             <div class="row">
                 <input type="text" name="name" placeholder="Full Name" required>
@@ -104,15 +103,15 @@
                 <input type="email" name="email" placeholder="Email Address" required>
             </div>
             <div class="row">
-                <input type="number" name="amount" placeholder="Amount Paid (₹)" min="0" step="any" required>
+                <input type="number" name="amountPaid" placeholder="Amount Paid (₹)" min="0" step="any" required>
                 <input type="text" name="journalName" placeholder="Publication Journal">
             </div>
             <div class="row">
-                <input type="text" name="fee_category" placeholder="Fee Category" required>
-                <input type="text" name="transaction_id" placeholder="Transaction ID" required>
+                <input type="text" name="feeType" placeholder="Fee Category" required>
+                <input type="text" name="transactionId" placeholder="Transaction ID" required>
             </div>
             <div class="row">
-                <input type="date" name="registration_date" placeholder="Registration Date" required>
+                <input type="date" name="date" placeholder="Registration Date" required>
                 <button type="submit" class="submit-btn">Submit Registration</button>
             </div>
         </form>
