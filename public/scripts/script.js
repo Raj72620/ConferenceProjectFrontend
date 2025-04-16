@@ -21,10 +21,7 @@ function initializeAnimations() {
 
 // Form Handlers
 function setupFormHandlers() {
-    // Registration Form Handler
     document.getElementById("registrationForm")?.addEventListener("submit", handleRegistrationSubmission);
-
-    // Contact Form Handler
     document.getElementById("contactForm")?.addEventListener("submit", handleContactSubmission);
 }
 
@@ -34,76 +31,89 @@ async function handleRegistrationSubmission(event) {
     
     try {
         clearValidationErrors();
+        let isValid = true;
+
+        // Enhanced Validation
+        const requiredFields = [
+            'name', 'paperId', 'institution', 'phone', 'email',
+            'amountPaid', 'feeType', 'transactionId', 'date'
+        ];
 
         // Validate required fields
-        let isValid = true;
-        const requiredFields = ['name', 'paperId', 'amountPaid', 'feeType', 'transactionId', 'date'];
         requiredFields.forEach(field => {
             const input = form.elements[field];
             if (!input.value.trim()) {
-                showFieldError(input, "This field is required");
+                showFieldError(input, `${input.placeholder} is required`);
                 isValid = false;
             }
         });
 
+        // Validate amount
+        const amount = parseFloat(form.elements.amountPaid.value);
+        if (isNaN(amount) || amount < 0) {
+            showFieldError(form.elements.amountPaid, "Invalid amount value");
+            isValid = false;
+        }
+
+        // Validate email format
+        const email = form.elements.email.value.trim();
+        if (!/^\S+@\S+\.\S+$/.test(email)) {
+            showFieldError(form.elements.email, "Invalid email format");
+            isValid = false;
+        }
+
         if (!isValid) {
-            showFeedback(false, "Please fill all required fields (marked with *)");
+            showFeedback(false, "Please fix the highlighted errors");
             return;
         }
 
-        // Prepare data with null checks
+        // Prepare form data
         const formData = {
             name: form.elements.name.value.trim(),
             paperId: form.elements.paperId.value.trim(),
-            paperTitle: form.elements.paperTitle?.value?.trim() || "",
             institution: form.elements.institution.value.trim(),
             phone: form.elements.phone.value.trim(),
-            email: form.elements.email.value.trim(),
-            amountPaid: parseFloat(form.elements.amountPaid.value),
-            journalName: form.elements.journalName?.value?.trim() || "",
+            email: email,
+            amountPaid: amount,
             feeType: form.elements.feeType.value.trim(),
             transactionId: form.elements.transactionId.value.trim(),
-            date: new Date(form.elements.date.value).toISOString() // Convert to ISO
+            date: new Date(form.elements.date.value).toISOString(),
+            paperTitle: form.elements.paperTitle?.value?.trim() || "",
+            journalName: form.elements.journalName?.value?.trim() || ""
         };
 
-        console.log("Registration Payload:", formData);
+        // API call with timeout
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000);
 
         const response = await fetch(`${API_BASE_URL}/api/registrations/register`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(formData)
+            body: JSON.stringify(formData),
+            signal: controller.signal
         });
 
+        clearTimeout(timeoutId);
         const responseData = await response.json();
-        
+
         if (!response.ok) {
             console.error("Backend Error:", responseData);
-            throw new Error(responseData.message || "Registration failed: Invalid data format");
+            throw new Error(responseData.error || "Registration failed: Please check your data");
         }
 
-        showFeedback(true, "Registration successful! Check your email for confirmation");
+        showFeedback(true, "Registration successful! Confirmation email sent");
         form.reset();
 
     } catch (error) {
         console.error("Registration Error:", error);
-        showFeedback(false, error.message || "Server error. Please try again later.");
+        const errorMessage = error.name === 'AbortError' 
+            ? "Request timed out. Please try again" 
+            : error.message;
+        showFeedback(false, errorMessage);
     }
 }
 
-// New helper functions
-function showFieldError(input, message) {
-    const errorDiv = document.createElement("div");
-    errorDiv.className = "field-error";
-    errorDiv.textContent = message;
-    errorDiv.style.color = "red";
-    errorDiv.style.fontSize = "0.8rem";
-    input.parentNode.appendChild(errorDiv);
-}
-
-function clearValidationErrors() {
-    document.querySelectorAll(".field-error").forEach(el => el.remove());
-}
-
+// Contact Form Handler (Fixed Endpoint)
 async function handleContactSubmission(event) {
     event.preventDefault();
     const form = event.target;
@@ -116,14 +126,13 @@ async function handleContactSubmission(event) {
             message: form.elements.message.value.trim()
         };
 
+        // Basic validation
         if (!formData.name || !formData.email || !formData.message) {
-            showFeedback(false, "Please fill all required fields");
+            showFeedback(false, "Name, Email and Message are required");
             return;
         }
 
-        console.log("Submitting contact form:", formData);
-
-        const response = await fetch(`${API_BASE_URL}/api/contact/contact`, {
+        const response = await fetch(`${API_BASE_URL}/api/contact`, { // Fixed endpoint
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(formData)
@@ -131,18 +140,15 @@ async function handleContactSubmission(event) {
 
         const result = await response.json();
         
-        if (!response.ok) {
-            throw new Error(result.message || `Message failed (${response.status})`);
-        }
-
-        showFeedback(true, result.message || "Message sent successfully!");
+        if (!response.ok) throw new Error(result.error || "Message submission failed");
+        
+        showFeedback(true, "Message sent successfully! We'll contact you soon");
         form.reset();
     } catch (error) {
         console.error("Contact Error:", error);
-        showFeedback(false, error.message || "Failed to send message");
+        showFeedback(false, error.message);
     }
 }
-
 // Animation Functions
 function createObserver(selector, animationClass, threshold = 0.2) {
     const elements = document.querySelectorAll(selector);
