@@ -1,176 +1,77 @@
 // Global Configuration
 const API_BASE_URL = "https://conferenceproject-backend.onrender.com";
 
+
+
+
+
+
+// DOM Ready Handler
 document.addEventListener("DOMContentLoaded", () => {
     initializeAnimations();
     setupFormHandlers();
     initializeCarousel();
 });
 
-function showFeedback(isSuccess, message) {
-    const alertBox = document.createElement("div");
-    alertBox.className = `feedback ${isSuccess ? "success" : "error"}`;
-    alertBox.innerHTML = `<span>${isSuccess ? "✓" : "⚠"}</span><p>${message}</p>`;
-    document.body.appendChild(alertBox);
-    setTimeout(() => alertBox.remove(), 5000);
-}
-
+// Animation Initialization
 function initializeAnimations() {
+    // Navigation and Contact Bars
     document.querySelector(".contact-bar")?.classList.add("show");
     document.querySelector(".navbar")?.classList.add("show");
-    
-    const observers = [
-        { selector: ".footer-section", class: "animate-footer" },
-        { selector: ".conference-section", class: "animate-section" },
-        { selector: ".contact-info", class: "animate-contact", threshold: 0.3 },
-        { selector: ".contact-container", class: "animate-contact" },
-        { selector: ".scientific-committee-box", class: "show", threshold: 0.5 },
-        { selector: ".member-details, .scientific-committee-box ul li", class: "show", threshold: 0.3 }
-    ];
 
-    observers.forEach(({ selector, class: className, threshold = 0.2 }) => {
-        const elements = document.querySelectorAll(selector);
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => entry.target.classList.toggle(className, entry.isIntersecting));
-        }, { threshold });
-        elements.forEach(el => observer.observe(el));
+    // Intersection Observers
+    createObserver(".footer-section", "animate-footer");
+    createObserver(".conference-section", "animate-section");
+    createObserver(".contact-info", "animate-contact", 0.3);
+    createObserver(".contact-container", "animate-contact");
+    createObserver(".scientific-committee-box", "show", 0.5);
+    createObserver(".member-details, .scientific-committee-box ul li", "show", 0.3);
+    
+    // Scroll-based Reveal
+    setupScrollReveal();
+}
+
+// Form Handlers
+function setupFormHandlers() {
+    // Registration Form
+    document.querySelector(".registration-form")?.addEventListener("submit", async (event) => {
+        await handleFormSubmission(event, `${API_BASE_URL}/api/registrations/register`, "Registration");
     });
 
-    const scrollRevealObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = "1";
-                entry.target.style.transform = "translateY(0)";
-            }
-        });
-    }, { threshold: 0.2 });
+    // Contact Form (Updated)
+    document.getElementById("contactForm")?.addEventListener("submit", async (event) => {
+        await handleContactSubmission(event);
+    });
 
-    document.querySelectorAll("h1, p, .registration-page, .second, h2, .registration-form, .update")
-           .forEach(el => scrollRevealObserver.observe(el));
+    // Paper Submission Form
+    document.getElementById("paperSubmissionForm")?.addEventListener("submit", async (event) => {
+        await handleFormSubmission(event, `${API_BASE_URL}/submit/papersubmit`, "Paper Submission", true);
+    });
 }
 
-function setupFormHandlers() {
-    document.getElementById("registrationForm")?.addEventListener("submit", handleRegistrationSubmission);
-    document.getElementById("contactForm")?.addEventListener("submit", handleContactSubmission);
-    document.getElementById("paperSubmissionForm")?.addEventListener("submit", handlePaperSubmission);
-}
 
-async function handleRegistrationSubmission(event) {
-    event.preventDefault();
-    const form = event.target;
-    
-    try {
-        // Clear previous errors
-        document.querySelectorAll('.invalid').forEach(el => el.classList.remove('invalid'));
 
-        // Validate required fields
-        const requiredFields = [
-            'name', 'paperId', 'paperTitle', 'institution',
-            'phone', 'email', 'amount', 'fee_category',
-            'transaction_id', 'registration_date'
-        ];
 
-        let isValid = true;
-
-        requiredFields.forEach(field => {
-            const input = form.elements[field];
-            if (!input.value.trim()) {
-                input.classList.add('invalid');
-                isValid = false;
-            }
-        });
-
-        // Additional validations
-        const amount = parseFloat(form.elements.amountPaid.value);
-        if (isNaN(amount) || amount < 1) {
-            form.elements.amountPaid.classList.add('invalid');
-            isValid = false;
-        }
-
-        if (!/^\d{10}$/.test(form.elements.phone.value.trim())) {
-            form.elements.phone.classList.add('invalid');
-            isValid = false;
-        }
-
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.elements.email.value.trim())) {
-            form.elements.email.classList.add('invalid');
-            isValid = false;
-        }
-
-        if (!isValid) {
-            showFeedback(false, "Please fix the highlighted errors");
-            return;
-        }
-
-        // Prepare EXACT data format backend expects
-        const formData = {
-            name: form.elements.name.value.trim(),
-            paperId: form.elements.paperId.value.trim(),
-            paperTitle: form.elements.paperTitle.value.trim(),
-            institution: form.elements.institution.value.trim(),
-            phone: form.elements.phone.value.trim(),
-            email: form.elements.email.value.trim(),
-            amount: parseFloat(form.elements.amount.value),
-            fee_category: form.elements.fee_category.value.trim(),
-            transaction_id: form.elements.transaction_id.value.trim(),
-            registration_date: new Date(form.elements.registration_date.value).toISOString(),
-            journalName: form.elements.journalName?.value?.trim() || ""
-        };
-        // Add optional fields if they exist
-        if (form.elements.paperTitle?.value?.trim()) {
-            formData.paper_title = form.elements.paperTitle.value.trim();
-        }
-        if (form.elements.journalName?.value?.trim()) {
-            formData.journal = form.elements.journalName.value.trim();
-        }
-
-        // Debug: Log final payload
-        console.log("Final Submission Data:", formData);
-
-        // API call with timeout
-        const response = await fetch(`${API_BASE_URL}/api/registrations/register`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(formData),
-            signal: AbortSignal.timeout(10000)
-        });
-
-        const result = await response.json();
-        
-        if (!response.ok) {
-            console.error("Backend Response:", result);
-            throw new Error(result.error || result.message || "Registration failed. Please check your data.");
-        }
-
-        showFeedback(true, "✅ Registration successful! Confirmation email sent");
-        form.reset();
-
-    } catch (error) {
-        console.error("Registration Error:", error);
-        showFeedback(false, error.name === 'AbortError' 
-            ? "⏳ Request timed out. Please try again." 
-            : error.message || "❌ Server error. Please try again later."
-        );
-    }
-}
-
+// Contact Form Handler (New)
 async function handleContactSubmission(event) {
     event.preventDefault();
     const form = event.target;
+    
     const formData = {
         name: form.elements.name.value.trim(),
         email: form.elements.email.value.trim(),
-        phone: form.elements.phone.value.trim() || "",
+        phone: form.elements.phone?.value.trim() || "", // Optional field
         message: form.elements.message.value.trim()
     };
 
+    // Validate required fields
     if (!formData.name || !formData.email || !formData.message) {
-        showFeedback(false, "Name, Email and Message are required");
+        showFeedback(false, "Please fill in Name, Email, and Message fields!");
         return;
     }
 
     try {
-        const response = await fetch(`${API_BASE_URL}/api/contact`, {
+        const response = await fetch(`${API_BASE_URL}/api/contact/contact`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(formData)
@@ -179,10 +80,10 @@ async function handleContactSubmission(event) {
         const result = await response.json();
         
         if (!response.ok) {
-            throw new Error(result.error || "Message submission failed");
+            throw new Error(result.message || "Message submission failed");
         }
 
-        showFeedback(true, "Message sent successfully!");
+        showFeedback(true, result.message || "Message sent successfully!");
         form.reset();
     } catch (error) {
         console.error("Contact Error:", error);
@@ -190,34 +91,77 @@ async function handleContactSubmission(event) {
     }
 }
 
-async function handlePaperSubmission(event) {
+// Reusable Animation Functions
+function createObserver(selector, animationClass, threshold = 0.2) {
+    const elements = document.querySelectorAll(selector);
+    if (!elements.length) return;
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            entry.target.classList.toggle(animationClass, entry.isIntersecting);
+        });
+    }, { threshold });
+
+    elements.forEach(element => observer.observe(element));
+}
+
+function setupScrollReveal() {
+    const revealElements = [
+        { selector: "h1, p", threshold: 0.85 },
+        { selector: ".registration-page, .second, h2, .registration-form", threshold: 0.85 },
+        { selector: ".update", threshold: 0.85 }
+    ];
+
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = "1";
+                entry.target.style.transform = "translateY(0)";
+            }
+        });
+    }, { threshold: 0.2 });
+
+    revealElements.forEach(({ selector }) => {
+        document.querySelectorAll(selector).forEach(el => revealObserver.observe(el));
+    });
+}
+
+// General Form Handler
+async function handleFormSubmission(event, endpoint, actionName, isFileUpload = false) {
     event.preventDefault();
     const form = event.target;
-    const formData = new FormData(form);
+    const formData = isFileUpload ? new FormData(form) : Object.fromEntries(new FormData(form));
 
     try {
         form.querySelector('button').disabled = true;
-        const response = await fetch(`${API_BASE_URL}/submit/papersubmit`, {
+        const response = await fetch(endpoint, {
             method: "POST",
-            body: formData
+            headers: isFileUpload ? undefined : { "Content-Type": "application/json" },
+            body: isFileUpload ? formData : JSON.stringify(formData)
         });
 
         const result = await response.json();
         
         if (!response.ok) {
-            throw new Error(result.error || "Paper submission failed");
+            throw new Error(result.message || `${actionName} failed`);
         }
 
-        showFeedback(true, "Paper submitted successfully!");
+        showFeedback(true, result.message || `${actionName} Successful!`);
         form.reset();
     } catch (error) {
-        console.error("Paper Submission Error:", error);
-        showFeedback(false, error.message);
+        console.error(`${actionName} Error:`, error);
+        showFeedback(false, error.message || `${actionName} Failed. Please try again.`);
     } finally {
         form.querySelector('button').disabled = false;
     }
 }
 
+// UI Feedback
+function showFeedback(isSuccess, message) {
+    alert(message); // Replace with toast/notification UI if available
+}
+
+// Carousel Functionality
 function initializeCarousel() {
     const wrapper = document.querySelector('.carousel-wrapper');
     const slides = document.querySelectorAll('.carousel-item');
@@ -233,16 +177,13 @@ function initializeCarousel() {
         slides[index].classList.add('active');
     };
 
-    const startAutoSlide = () => autoSlideInterval = setInterval(() => updateSlide(index + 1), 5000);
-    
-    window.nextSlide = () => {
-        updateSlide(index + 1);
-        clearInterval(autoSlideInterval);
-        startAutoSlide();
+    const startAutoSlide = () => {
+        autoSlideInterval = setInterval(() => updateSlide(index + 1), 3000);
     };
 
-    window.prevSlide = () => {
-        updateSlide(index - 1);
+    window.nextSlide = () => { updateSlide(index + 1); resetAutoSlide() };
+    window.prevSlide = () => { updateSlide(index - 1); resetAutoSlide() };
+    const resetAutoSlide = () => {
         clearInterval(autoSlideInterval);
         startAutoSlide();
     };
@@ -250,10 +191,17 @@ function initializeCarousel() {
     startAutoSlide();
 }
 
+
+
+
+
+
+// Utility Functions
 function toggleMenu() {
     document.querySelector('.nav-links').classList.toggle('active');
 }
 
+// Image Zoom Effect
 window.onload = () => {
     document.querySelector(".container img")?.classList.add("zoom");
 };
