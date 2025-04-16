@@ -55,9 +55,6 @@ function setupFormHandlers() {
     document.getElementById("paperSubmissionForm")?.addEventListener("submit", handlePaperSubmission);
 }
 
-
-
-
 async function handleRegistrationSubmission(event) {
     event.preventDefault();
     const form = event.target;
@@ -67,7 +64,12 @@ async function handleRegistrationSubmission(event) {
         document.querySelectorAll('.invalid').forEach(el => el.classList.remove('invalid'));
 
         // Validate required fields
-        const requiredFields = ['name', 'paperId', 'institution', 'phone', 'email', 'amountPaid', 'feeType', 'transactionId', 'date'];
+        const requiredFields = [
+            'name', 'paperId', 'paperTitle', 'institution',
+            'phone', 'email', 'amount', 'fee_category',
+            'transaction_id', 'registration_date'
+        ];
+
         let isValid = true;
 
         requiredFields.forEach(field => {
@@ -102,17 +104,18 @@ async function handleRegistrationSubmission(event) {
 
         // Prepare EXACT data format backend expects
         const formData = {
-            full_name: form.elements.name.value.trim(),  // Changed to match backend
-            paper_id: form.elements.paperId.value.trim(), // Changed to snake_case
+            name: form.elements.name.value.trim(),
+            paperId: form.elements.paperId.value.trim(),
+            paperTitle: form.elements.paperTitle.value.trim(),
             institution: form.elements.institution.value.trim(),
-            contact_number: form.elements.phone.value.trim(), // Changed field name
+            phone: form.elements.phone.value.trim(),
             email: form.elements.email.value.trim(),
-            amount: parseFloat(form.elements.amountPaid.value), // Changed key name
-            fee_category: form.elements.feeType.value.trim(), // Changed key name
-            transaction_id: form.elements.transactionId.value.trim(), // Snake case
-            registration_date: new Date(form.elements.date.value).toISOString() // Changed key
+            amount: parseFloat(form.elements.amount.value),
+            fee_category: form.elements.fee_category.value.trim(),
+            transaction_id: form.elements.transaction_id.value.trim(),
+            registration_date: new Date(form.elements.registration_date.value).toISOString(),
+            journalName: form.elements.journalName?.value?.trim() || ""
         };
-
         // Add optional fields if they exist
         if (form.elements.paperTitle?.value?.trim()) {
             formData.paper_title = form.elements.paperTitle.value.trim();
