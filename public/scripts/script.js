@@ -55,9 +55,6 @@ function setupFormHandlers() {
     document.getElementById("paperSubmissionForm")?.addEventListener("submit", handlePaperSubmission);
 }
 
-
-
-
 async function handleRegistrationSubmission(event) {
     event.preventDefault();
     const form = event.target;
@@ -156,9 +153,6 @@ async function handleRegistrationSubmission(event) {
         );
     }
 }
-
-
-
 
 async function handleContactSubmission(event) {
     event.preventDefault();
