@@ -5,7 +5,37 @@ document.addEventListener("DOMContentLoaded", () => {
     initializeAnimations();
     setupFormHandlers();
     initializeCarousel();
+    setupMobileMenu();
 });
+
+// ===== MOBILE MENU CORE FUNCTIONALITY =====
+function setupMobileMenu() {
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    
+    if (menuToggle && navLinks) {
+        // Toggle menu on button click
+        menuToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            navLinks.classList.toggle('active');
+            menuToggle.classList.toggle('active');
+        });
+            // Close menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (navLinks && !navLinks.contains(e.target)) { // ✅ Added missing parenthesis
+                    navLinks.classList.remove('active');
+                    menuToggle.classList.remove('active');
+                }
+            });
+    
+            // Close menu on scroll
+            window.addEventListener('scroll', () => {
+                navLinks.classList.remove('active');
+                menuToggle.classList.remove('active');
+            });
+        }
+    }
+    
 
 function showFeedback(isSuccess, message) {
     const alertBox = document.createElement("div");
@@ -60,10 +90,13 @@ function setupFormHandlers() {
 async function handleRegistrationSubmission(event) {
     event.preventDefault();
     const form = event.target;
+    const controller = new AbortController();
     
     try {
+        // Clear previous errors
         document.querySelectorAll('.invalid').forEach(el => el.classList.remove('invalid'));
 
+        // Validate required fields
         const requiredFields = [
             'name', 'paperId', 'paperTitle', 'institution',
             'phone', 'email', 'amount', 'fee_category',
@@ -71,32 +104,30 @@ async function handleRegistrationSubmission(event) {
         ];
 
         let isValid = true;
-
-        // Validate required fields
         requiredFields.forEach(field => {
             const input = form.elements[field];
-            if (!input || !input.value.trim()) {
-                if (input) input.classList.add('invalid');
+            if (input && !input.value.trim()) {
+                input.classList.add('invalid');
                 isValid = false;
             }
         });
 
         // Additional validations
         const amountInput = form.elements.amount;
-        if (!amountInput || isNaN(amountInput.value) || amountInput.value < 1) {
-            if (amountInput) amountInput.classList.add('invalid');
+        if (amountInput && (isNaN(amountInput.value) || amountInput.value < 1)) {
+            amountInput.classList.add('invalid');
             isValid = false;
         }
 
         const phoneInput = form.elements.phone;
-        if (!phoneInput || !/^\d{10}$/.test(phoneInput.value.trim())) {
-            if (phoneInput) phoneInput.classList.add('invalid');
+        if (phoneInput && !/^\d{10}$/.test(phoneInput.value.trim())) {
+            phoneInput.classList.add('invalid');
             isValid = false;
         }
 
         const emailInput = form.elements.email;
-        if (!emailInput || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value.trim())) {
-            if (emailInput) emailInput.classList.add('invalid');
+        if (emailInput && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value.trim())) {
+            emailInput.classList.add('invalid');
             isValid = false;
         }
 
@@ -105,7 +136,7 @@ async function handleRegistrationSubmission(event) {
             return;
         }
 
-        // Prepare data with null checks
+        // Prepare form data
         const formData = {
             name: form.elements.name.value.trim(),
             paperId: form.elements.paperId.value.trim(),
@@ -117,12 +148,11 @@ async function handleRegistrationSubmission(event) {
             fee_category: form.elements.fee_category.value.trim(),
             transaction_id: form.elements.transaction_id.value.trim(),
             registration_date: new Date(form.elements.registration_date.value).toISOString(),
-            journalName: form.elements.journalName ? form.elements.journalName.value.trim() : ""
+            journalName: form.elements.journalName?.value?.trim() || ""
         };
 
-        // API call with timeout
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 10000);
+        // Set timeout to 30 seconds (Render free tier needs more time)
+        const timeoutId = setTimeout(() => controller.abort(), 30000);
 
         const response = await fetch(`${API_BASE_URL}/api/registrations/register`, {
             method: "POST",
@@ -135,16 +165,23 @@ async function handleRegistrationSubmission(event) {
         const result = await response.json();
 
         if (!response.ok) {
-            console.error("Backend Response:", result);
-            throw new Error(result.error || "Registration failed");
+            throw new Error(result.error || result.message || "Registration failed");
         }
 
-        showFeedback(true, "✅ Registration successful!");
+        showFeedback(true, "✅ Registration successful! Check your email");
         form.reset();
 
     } catch (error) {
         console.error("Registration Error:", error);
-        showFeedback(false, error.message || "Registration failed. Please try again.");
+        let errorMessage = "Registration failed. Please try again.";
+        
+        if (error.name === 'AbortError') {
+            errorMessage = "Request timed out. The server is taking too long to respond.";
+        } else if (error.message) {
+            errorMessage = error.message;
+        }
+        
+        showFeedback(false, errorMessage);
     }
 }
 
