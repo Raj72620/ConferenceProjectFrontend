@@ -302,7 +302,12 @@
     position: relative;
     overflow: hidden;
 }
-
+/* Phone: Carousel */
+@media (max-width: 480px) { /* ADD THIS */
+    .carousel-container {
+      height: 30vh !important; 
+    }
+  }
 /* Wrapper for images */
 .carousel-wrapper {
     display: flex;
@@ -463,6 +468,21 @@ ul li::before {
     }
 }
 
+/* Phone: Contact Bar */
+@media (max-width: 480px) { /* ADD THIS */
+    .contact-bar {
+      padding: 10px 15px !important; 
+      gap: 8px;
+    }
+    #email, #whatsapp {
+      font-size: 14px !important;
+      justify-content: center;
+    }
+    .phone-icon {
+      margin-left: 5px !important;
+    }
+  }
+
 /* Responsive Conference Section */
 @media screen and (max-width: 1024px) {
     .conference-section {
@@ -477,22 +497,48 @@ ul li::before {
     }
 }
 
-@media screen and (max-width: 768px) {
-    .navbar {
-        display: none;
+/* Phone: Navbar */
+@media (max-width: 768px) {
+    .nav-links {
+      display: none !important; /* Hide desktop menu */
     }
-    .carousel-container{
-        display: none;
+    .menu-toggle {
+      display: block !important; /* Show hamburger */
+      position: absolute;
+      right: 20px;
+      top: 20px;
     }
-    .right-section p{
-        justify-content: space-evenly;
+    /* Active mobile menu */
+    .nav-links.active {
+      display: flex !important;
+      flex-direction: column;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      background: linear-gradient(to right, rgb(111, 152, 175), rgb(47, 108, 169), rgb(190, 190, 237));
     }
-}
+  }
 @media screen and (max-width: 768px) {
     .conference-section img {
         display: none;
     }
 }
+
+/* Phone: Conference Section */
+@media (max-width: 480px) { /* ADD THIS */
+    .conference-section {
+      padding: 30px 20px !important;
+      gap: 20px;
+    }
+    .conference-details {
+      font-size: 16px !important;
+      padding: 15px !important;
+    }
+    .highlight.show {
+      font-size: 18px !important;
+    }
+  }
 
 
 /* Responsive Registration Heading */
@@ -518,8 +564,14 @@ ul li::before {
     
     .right-section{
         margin: 5px 0px;
+        padding: 10px !important;
+        overflow: auto !important;
         /* border-radius: 0px; */
     }
+    .right-section h2 {
+        font-size: 18px !important;
+        line-height: 1.3 !important;
+      }
     .carousel-container {
         border: 4px sloid transparent;
     }
@@ -538,8 +590,12 @@ ul li::before {
     .right-section p{
         line-height: normal;
         text-align: justify;
-        font-size: 12px;
+        font-size: 14px !important;
     }
+    .know-more-btn {
+        padding: 10px 15px !important;
+        font-size: 14px !important;
+      }
     .conference-container1 {
         width: 95%; /* Use more screen space */
         padding: 10px;
@@ -568,7 +624,17 @@ ul li::before {
         flex-direction: column;
         text-align: center;
     }
-
+    .footer-section table td {
+        display: block;
+        width: 100% !important;
+        text-align: center !important;
+      }
+      .footer-section h3 {
+        font-size: 18px !important;
+      }
+      .footer-section li {
+        font-size: 14px !important;
+      }
     .footer-section {
         min-width: unset;
         margin: 10px 0;

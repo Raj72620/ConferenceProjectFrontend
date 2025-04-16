@@ -58,92 +58,95 @@ function setupFormHandlers() {
 
 
 
-// Update ONLY the handleRegistrationSubmission function in your script.js
 async function handleRegistrationSubmission(event) {
     event.preventDefault();
     const form = event.target;
     
     try {
-        // Add 'paperTitle' to required fields (CRITICAL FIX)
-        const requiredFields = [
-            'name', 'paperId', 'paperTitle', 'institution', 
-            'phone', 'email', 'amountPaid', 'feeType', 
-            'transactionId', 'date'
-        ];
+        // Clear previous errors
+        document.querySelectorAll('.invalid').forEach(el => el.classList.remove('invalid'));
 
+        // Validate required fields
+        const requiredFields = ['name', 'paperId', 'institution', 'phone', 'email', 'amountPaid', 'feeType', 'transactionId', 'date'];
         let isValid = true;
 
-        // Validate all fields including paperTitle
         requiredFields.forEach(field => {
             const input = form.elements[field];
-            input.classList.remove('invalid');
-            
             if (!input.value.trim()) {
                 input.classList.add('invalid');
                 isValid = false;
             }
         });
 
-        // Additional validation for amount
+        // Additional validations
         const amount = parseFloat(form.elements.amountPaid.value);
-        if (isNaN(amount) || amount < 0) {
+        if (isNaN(amount) || amount < 1) {
             form.elements.amountPaid.classList.add('invalid');
             isValid = false;
         }
 
-        // Validate email format
-        const email = form.elements.email.value.trim();
-        if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+        if (!/^\d{10}$/.test(form.elements.phone.value.trim())) {
+            form.elements.phone.classList.add('invalid');
+            isValid = false;
+        }
+
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.elements.email.value.trim())) {
             form.elements.email.classList.add('invalid');
             isValid = false;
         }
 
         if (!isValid) {
-            showFeedback(false, "Please fill all required fields correctly");
+            showFeedback(false, "Please fix the highlighted errors");
             return;
         }
 
-        // Prepare data with proper types
+        // Prepare EXACT data format backend expects
         const formData = {
-            name: form.elements.name.value.trim(),
-            paperId: form.elements.paperId.value.trim(),
-            paperTitle: form.elements.paperTitle.value.trim(), // Now required
+            full_name: form.elements.name.value.trim(),  // Changed to match backend
+            paper_id: form.elements.paperId.value.trim(), // Changed to snake_case
             institution: form.elements.institution.value.trim(),
-            phone: form.elements.phone.value.trim(),
-            email: email,
-            amountPaid: amount,
-            feeType: form.elements.feeType.value.trim(),
-            transactionId: form.elements.transactionId.value.trim(),
-            date: new Date(form.elements.date.value).toISOString(),
-            journalName: form.elements.journalName?.value?.trim() || ""
+            contact_number: form.elements.phone.value.trim(), // Changed field name
+            email: form.elements.email.value.trim(),
+            amount: parseFloat(form.elements.amountPaid.value), // Changed key name
+            fee_category: form.elements.feeType.value.trim(), // Changed key name
+            transaction_id: form.elements.transactionId.value.trim(), // Snake case
+            registration_date: new Date(form.elements.date.value).toISOString() // Changed key
         };
 
-        // API call with error handling
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 10000);
+        // Add optional fields if they exist
+        if (form.elements.paperTitle?.value?.trim()) {
+            formData.paper_title = form.elements.paperTitle.value.trim();
+        }
+        if (form.elements.journalName?.value?.trim()) {
+            formData.journal = form.elements.journalName.value.trim();
+        }
 
+        // Debug: Log final payload
+        console.log("Final Submission Data:", formData);
+
+        // API call with timeout
         const response = await fetch(`${API_BASE_URL}/api/registrations/register`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(formData),
-            signal: controller.signal
+            signal: AbortSignal.timeout(10000)
         });
 
-        clearTimeout(timeoutId);
+        const result = await response.json();
         
         if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.message || "Registration failed");
+            console.error("Backend Response:", result);
+            throw new Error(result.error || result.message || "Registration failed. Please check your data.");
         }
 
-        showFeedback(true, "Registration successful! Confirmation email sent");
+        showFeedback(true, "✅ Registration successful! Confirmation email sent");
         form.reset();
 
     } catch (error) {
         console.error("Registration Error:", error);
-        showFeedback(false, error.name === "AbortError" 
-            ? "Request timed out. Please try again." 
-            : error.message
+        showFeedback(false, error.name === 'AbortError' 
+            ? "⏳ Request timed out. Please try again." 
+            : error.message || "❌ Server error. Please try again later."
         );
     }
 }
