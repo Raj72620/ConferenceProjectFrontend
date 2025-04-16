@@ -5,37 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initializeAnimations();
     setupFormHandlers();
     initializeCarousel();
-    setupMobileMenu();
 });
-
-// ===== MOBILE MENU CORE FUNCTIONALITY =====
-function setupMobileMenu() {
-    const menuToggle = document.querySelector('.menu-toggle');
-    const navLinks = document.querySelector('.nav-links');
-    
-    if (menuToggle && navLinks) {
-        // Toggle menu on button click
-        menuToggle.addEventListener('click', (e) => {
-            e.stopPropagation();
-            navLinks.classList.toggle('active');
-            menuToggle.classList.toggle('active');
-        });
-            // Close menu when clicking outside
-            document.addEventListener('click', (e) => {
-                if (navLinks && !navLinks.contains(e.target)) { // ✅ Added missing parenthesis
-                    navLinks.classList.remove('active');
-                    menuToggle.classList.remove('active');
-                }
-            });
-    
-            // Close menu on scroll
-            window.addEventListener('scroll', () => {
-                navLinks.classList.remove('active');
-                menuToggle.classList.remove('active');
-            });
-        }
-    }
-    
 
 function showFeedback(isSuccess, message) {
     const alertBox = document.createElement("div");
@@ -87,10 +57,10 @@ function setupFormHandlers() {
 
 
 
+
 async function handleRegistrationSubmission(event) {
     event.preventDefault();
     const form = event.target;
-    const controller = new AbortController();
     
     try {
         // Clear previous errors
@@ -104,30 +74,29 @@ async function handleRegistrationSubmission(event) {
         ];
 
         let isValid = true;
+
         requiredFields.forEach(field => {
             const input = form.elements[field];
-            if (input && !input.value.trim()) {
+            if (!input.value.trim()) {
                 input.classList.add('invalid');
                 isValid = false;
             }
         });
 
         // Additional validations
-        const amountInput = form.elements.amount;
-        if (amountInput && (isNaN(amountInput.value) || amountInput.value < 1)) {
-            amountInput.classList.add('invalid');
+        const amount = parseFloat(form.elements.amountPaid.value);
+        if (isNaN(amount) || amount < 1) {
+            form.elements.amountPaid.classList.add('invalid');
             isValid = false;
         }
 
-        const phoneInput = form.elements.phone;
-        if (phoneInput && !/^\d{10}$/.test(phoneInput.value.trim())) {
-            phoneInput.classList.add('invalid');
+        if (!/^\d{10}$/.test(form.elements.phone.value.trim())) {
+            form.elements.phone.classList.add('invalid');
             isValid = false;
         }
 
-        const emailInput = form.elements.email;
-        if (emailInput && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value.trim())) {
-            emailInput.classList.add('invalid');
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.elements.email.value.trim())) {
+            form.elements.email.classList.add('invalid');
             isValid = false;
         }
 
@@ -136,7 +105,7 @@ async function handleRegistrationSubmission(event) {
             return;
         }
 
-        // Prepare form data
+        // Prepare EXACT data format backend expects
         const formData = {
             name: form.elements.name.value.trim(),
             paperId: form.elements.paperId.value.trim(),
@@ -150,38 +119,41 @@ async function handleRegistrationSubmission(event) {
             registration_date: new Date(form.elements.registration_date.value).toISOString(),
             journalName: form.elements.journalName?.value?.trim() || ""
         };
+        // Add optional fields if they exist
+        if (form.elements.paperTitle?.value?.trim()) {
+            formData.paper_title = form.elements.paperTitle.value.trim();
+        }
+        if (form.elements.journalName?.value?.trim()) {
+            formData.journal = form.elements.journalName.value.trim();
+        }
 
-        // Set timeout to 30 seconds (Render free tier needs more time)
-        const timeoutId = setTimeout(() => controller.abort(), 30000);
+        // Debug: Log final payload
+        console.log("Final Submission Data:", formData);
 
+        // API call with timeout
         const response = await fetch(`${API_BASE_URL}/api/registrations/register`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(formData),
-            signal: controller.signal
+            signal: AbortSignal.timeout(10000)
         });
 
-        clearTimeout(timeoutId);
         const result = await response.json();
-
+        
         if (!response.ok) {
-            throw new Error(result.error || result.message || "Registration failed");
+            console.error("Backend Response:", result);
+            throw new Error(result.error || result.message || "Registration failed. Please check your data.");
         }
 
-        showFeedback(true, "✅ Registration successful! Check your email");
+        showFeedback(true, "✅ Registration successful! Confirmation email sent");
         form.reset();
 
     } catch (error) {
         console.error("Registration Error:", error);
-        let errorMessage = "Registration failed. Please try again.";
-        
-        if (error.name === 'AbortError') {
-            errorMessage = "Request timed out. The server is taking too long to respond.";
-        } else if (error.message) {
-            errorMessage = error.message;
-        }
-        
-        showFeedback(false, errorMessage);
+        showFeedback(false, error.name === 'AbortError' 
+            ? "⏳ Request timed out. Please try again." 
+            : error.message || "❌ Server error. Please try again later."
+        );
     }
 }
 
