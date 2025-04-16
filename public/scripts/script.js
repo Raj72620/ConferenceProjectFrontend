@@ -33,15 +33,25 @@ async function handleRegistrationSubmission(event) {
     const form = event.target;
     
     try {
+        clearValidationErrors();
+
         // Validate required fields
-        if (!form.elements.name.value?.trim() || 
-            !form.elements.paperId.value?.trim() || 
-            !form.elements.amountPaid.value?.trim()) {
-            showFeedback(false, "Name, Paper ID, and Amount Paid are required!");
+        let isValid = true;
+        const requiredFields = ['name', 'paperId', 'amountPaid', 'feeType', 'transactionId', 'date'];
+        requiredFields.forEach(field => {
+            const input = form.elements[field];
+            if (!input.value.trim()) {
+                showFieldError(input, "This field is required");
+                isValid = false;
+            }
+        });
+
+        if (!isValid) {
+            showFeedback(false, "Please fill all required fields (marked with *)");
             return;
         }
 
-        // Prepare form data with null checks
+        // Prepare data with null checks
         const formData = {
             name: form.elements.name.value.trim(),
             paperId: form.elements.paperId.value.trim(),
@@ -53,10 +63,10 @@ async function handleRegistrationSubmission(event) {
             journalName: form.elements.journalName?.value?.trim() || "",
             feeType: form.elements.feeType.value.trim(),
             transactionId: form.elements.transactionId.value.trim(),
-            date: form.elements.date.value
+            date: new Date(form.elements.date.value).toISOString() // Convert to ISO
         };
 
-        console.log("Submitting registration:", formData);
+        console.log("Registration Payload:", formData);
 
         const response = await fetch(`${API_BASE_URL}/api/registrations/register`, {
             method: "POST",
@@ -64,21 +74,34 @@ async function handleRegistrationSubmission(event) {
             body: JSON.stringify(formData)
         });
 
-        // Handle empty responses
-        const responseText = await response.text();
-        const result = responseText ? JSON.parse(responseText) : {};
-
+        const responseData = await response.json();
+        
         if (!response.ok) {
-            throw new Error(result.message || `Registration failed (${response.status})`);
+            console.error("Backend Error:", responseData);
+            throw new Error(responseData.message || "Registration failed: Invalid data format");
         }
 
-        showFeedback(true, result.message || "Registration successful!");
+        showFeedback(true, "Registration successful! Check your email for confirmation");
         form.reset();
 
     } catch (error) {
         console.error("Registration Error:", error);
-        showFeedback(false, error.message || "Registration failed. Please try again.");
+        showFeedback(false, error.message || "Server error. Please try again later.");
     }
+}
+
+// New helper functions
+function showFieldError(input, message) {
+    const errorDiv = document.createElement("div");
+    errorDiv.className = "field-error";
+    errorDiv.textContent = message;
+    errorDiv.style.color = "red";
+    errorDiv.style.fontSize = "0.8rem";
+    input.parentNode.appendChild(errorDiv);
+}
+
+function clearValidationErrors() {
+    document.querySelectorAll(".field-error").forEach(el => el.remove());
 }
 
 async function handleContactSubmission(event) {
