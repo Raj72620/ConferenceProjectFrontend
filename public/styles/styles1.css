@@ -1,4 +1,4 @@
-/* General Styles */
+/* ===== YOUR ORIGINAL CODE ===== */
 * {
     margin: 0;
     padding: 0;
@@ -9,7 +9,6 @@ body {
     font-family: Arial, sans-serif;
 }
 
-/* Responsive Navbar */
 .navbar {
     width: 100%;
     background-color: #7cb518;
@@ -42,7 +41,6 @@ body {
     border-radius: 5px;
 }
 
-/* Mobile Navigation */
 @media (max-width: 768px) {
     .nav-links {
         flex-direction: column;
@@ -55,7 +53,6 @@ body {
     }
 }
 
-/* Conference Section */
 .conference-section {
     display: flex;
     flex-wrap: wrap;
@@ -84,7 +81,6 @@ body {
     }
 }
 
-/* Registration Section */
 .registration-heading {
     text-align: center;
     padding: 20px;
@@ -100,7 +96,6 @@ body {
     }
 }
 
-/* Conference Container */
 .conference-container1 {
     display: flex;
     flex-wrap: wrap;
@@ -134,7 +129,6 @@ body {
     }
 }
 
-/* Footer */
 .footer {
     background-color: #7cb518;
     padding: 30px 10px;
@@ -158,5 +152,104 @@ body {
     .footer-container {
         flex-direction: column;
         align-items: center;
+    }
+}
+
+/* ===== PHONE RESPONSIVE ADDITIONS ===== */
+@media (max-width: 480px) {
+    /* Navbar */
+    .navbar {
+        padding: 10px 15px !important;
+        position: relative;
+    }
+
+    .nav-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: #7cb518;
+        flex-direction: column;
+        padding: 15px 0 !important;
+        display: none !important;
+        z-index: 1000;
+    }
+
+    .nav-links.show {
+        display: flex !important;
+    }
+
+    .nav-links li {
+        margin: 10px 0 !important;
+        text-align: center;
+    }
+
+    /* Conference Section */
+    .conference-section {
+        padding: 25px 15px !important;
+    }
+
+    .logo-container img,
+    .extra-logo-container img {
+        max-width: 90px !important;
+    }
+
+    .conference-details {
+        font-size: 1rem !important;
+        padding: 15px !important;
+    }
+
+    /* Registration Heading */
+    .registration-heading {
+        font-size: 18px !important;
+        padding: 15px !important;
+    }
+
+    /* Conference Container */
+    .conference-container1 {
+        margin: 20px auto !important;
+        border-radius: 0;
+    }
+
+    .left-section,
+    .right-section {
+        padding: 15px !important;
+    }
+
+    .right-section p {
+        font-size: 14px !important;
+        line-height: 1.5;
+    }
+
+    /* Footer */
+    .footer-section {
+        min-width: 100% !important;
+        margin: 10px 0 !important;
+    }
+
+    .footer-section table td {
+        display: block !important;
+        width: 100% !important;
+        text-align: center !important;
+        padding: 8px !important;
+    }
+
+    .footer-section li {
+        font-size: 14px !important;
+    }
+}
+
+/* Smaller Phones */
+@media (max-width: 360px) {
+    .conference-details {
+        font-size: 0.9rem !important;
+    }
+    
+    .registration-heading {
+        font-size: 16px !important;
+    }
+    
+    .right-section p {
+        font-size: 13px !important;
     }
 }

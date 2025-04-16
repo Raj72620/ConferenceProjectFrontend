@@ -1,3 +1,4 @@
+/* ===== YOUR ORIGINAL CODE ===== */
 .tracks-container {
     display: flex;
     flex-direction: column;
@@ -30,7 +31,6 @@
     animation: fadeIn 1s ease-in forwards;
 }
 
- 
 .track h2 {
     font-size: 18px;
     font-weight: bold;
@@ -39,7 +39,6 @@
     animation: slideRight 1s ease-out forwards;
 }
 
- 
 .track:first-child ul {
     opacity: 0;
     animation: slideLeft 3s ease-out 0.5s forwards;
@@ -50,7 +49,6 @@
     animation: slideRight 3s ease-out 0.5s forwards;
 }
 
- 
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
@@ -65,6 +63,9 @@
     from { opacity: 0; transform: translateX(-50px); }
     to { opacity: 1; transform: translateX(0); }
 }
+
+/* ===== MY RESPONSIVE ADDITIONS ===== */
+/* Tablet Styles */
 @media screen and (max-width: 768px) {
     .tracks-container {
         margin-left: 0;  
@@ -77,25 +78,125 @@
     }
     
     .track {
-        width: 100%; /* Use full width on mobile */
+        width: 100%;
     }
     
     .track h2 {
-        font-size: 16px; /* Slightly smaller heading font */
+        font-size: 16px;
     }
     
     .track ul {
-        margin-left: 15px; /* Adjust list margin for better mobile spacing */
+        margin-left: 15px;
     }
-}
-@media (max-width: 768px) {
+
     .footer-bottom {
         text-align: center;
         padding: 10px 5%;
-        font-size: 10px; /* Adjust font size for mobile */
+        font-size: 10px;
     }
     .footer-bottom  p {
         text-align: center;
         padding-left: 20px;
+    }
+}
+
+/* Phone Styles (New Additions) */
+@media (max-width: 480px) {
+    /* Tracks Container */
+    .tracks-container {
+        padding: 20px !important;
+        gap: 15px;
+    }
+
+    .track-row {
+        gap: 10px;
+    }
+
+    .track h2 {
+        font-size: 14px !important;
+        line-height: 1.4;
+    }
+
+    .track ul {
+        margin-left: 15px;
+        padding-left: 10px;
+    }
+
+    .track li {
+        font-size: 12px;
+        line-height: 1.5;
+        margin-bottom: 8px;
+    }
+
+    /* Animations */
+    .track {
+        animation-duration: 0.8s !important;
+    }
+    
+    @keyframes slideRight,
+    @keyframes slideLeft {
+        from { transform: translateX(20px); }
+    }
+
+    /* Footer */
+    .footer-bottom {
+        padding: 10px !important;
+    }
+
+    .footer-bottom p {
+        font-size: 10px !important;
+        padding-left: 0 !important;
+    }
+
+    /* Navbar (Same as previous pages) */
+    .navbarabout {
+        padding: 10px 15px !important;
+    }
+
+    .nav-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: linear-gradient(to right, rgb(111, 152, 175), rgb(47, 108, 169), rgb(190, 190, 237));
+        flex-direction: column;
+        padding: 15px 0 !important;
+        display: none !important;
+        z-index: 1000;
+    }
+
+    .nav-links.active {
+        display: flex !important;
+    }
+
+    .nav-links li {
+        margin: 10px 0 !important;
+        text-align: center;
+    }
+
+    /* Registration Heading */
+    .registration-headingabout h2 {
+        font-size: 1.2rem !important;
+    }
+
+    /* Content Area */
+    .about {
+        padding: 15px !important;
+    }
+
+    .about p {
+        font-size: 12px !important;
+        line-height: 1.6 !important;
+    }
+}
+
+/* Smaller Phones */
+@media (max-width: 360px) {
+    .track h2 {
+        font-size: 13px !important;
+    }
+    
+    .track li {
+        font-size: 11px !important;
     }
 }

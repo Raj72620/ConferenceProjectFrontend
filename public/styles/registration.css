@@ -1,4 +1,4 @@
-/* Navigation */
+/* ===== BASE STYLES ===== */
 .navbar {
     width: 100%;
     background-color: #66a5c1;
@@ -57,7 +57,7 @@
     display: block;
 }
 
-/* Registration Content */
+/* ===== REGISTRATION CONTENT ===== */
 .registration-page {
     width: 80%;
     margin: auto;
@@ -104,7 +104,7 @@
     color: #333;
 }
 
-/* Form Styling */
+/* ===== FORM STYLES ===== */
 .registration-form {
     display: flex;
     flex-direction: column;
@@ -163,7 +163,7 @@
     font-size: 22px;
 }
 
-/* Animation */
+/* ===== ANIMATIONS & UTILITIES ===== */
 .animate-on-scroll {
     opacity: 0;
     transform: translateY(30px);
@@ -175,50 +175,9 @@
     transform: translateY(0);
 }
 
-/* Error and Feedback Styles */
-.field-error {
-    color: #dc3545 !important;
-    font-size: 0.8rem;
-    margin-top: 4px;
-    display: block;
-}
-
-.feedback {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    padding: 15px 25px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    z-index: 1000;
-    animation: slideIn 0.3s ease-out;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-}
-
-.feedback.success {
-    background: #4CAF50;
-    color: white;
-}
-
-.feedback.error {
-    background: #f44336;
-    color: white;
-}
-
-.feedback span {
-    font-size: 1.2em;
-}
-
 @keyframes slideIn {
     from { transform: translateX(100%); }
     to { transform: translateX(0); }
-}
-
-.invalid {
-    border: 2px solid #ff4444 !important;
-    animation: shake 0.4s;
 }
 
 @keyframes shake {
@@ -227,7 +186,7 @@
     75% { transform: translateX(5px); }
 }
 
-/* Mobile Responsive */
+/* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 768px) {
     .registration-page {
         width: 95%;
@@ -270,5 +229,75 @@
         display: flex;
         flex-direction: column;
         cursor: pointer;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar {
+        padding: 10px 15px;
+    }
+
+    .nav-links li {
+        margin: 8px 0;
+    }
+
+    .nav-links a {
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+
+    .registration-page {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .registration-page p {
+        font-size: 16px;
+        line-height: 1.5;
+    }
+
+    .registration-form {
+        padding: 15px;
+    }
+
+    .registration-form input {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .submit-btn {
+        padding: 12px;
+        font-size: 16px;
+        width: 100%;
+    }
+
+    .fee-table th,
+    .fee-table td {
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    .animate-on-scroll {
+        transform: translateY(15px);
+        transition-duration: 0.4s;
+    }
+}
+
+@media (max-width: 360px) {
+    .fee-table th,
+    .fee-table td {
+        font-size: 12px;
+    }
+
+    .registration-page p {
+        font-size: 14px;
+    }
+
+    .section-title {
+        font-size: 20px;
+    }
+
+    .second h2 {
+        font-size: 18px;
     }
 }

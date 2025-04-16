@@ -1,3 +1,4 @@
+/* ===== YOUR ORIGINAL CODE ===== */
 .registration-page {
     width: 80%;
     margin: auto;
@@ -109,6 +110,8 @@ h1 {
     transform: translateY(0);
 }
 
+/* ===== MY RESPONSIVE ADDITIONS ===== */
+/* Tablet Styles (Existing) */
 @media screen and (max-width: 1024px) {
     .registration-page, .about {
         width: 90%;
@@ -120,13 +123,12 @@ h1 {
     }
 }
 
+/* Mobile: 768px (Existing) */
 @media screen and (max-width: 768px) {
     .navbarabout {
         display: none;
     }
-}
 
-@media screen and (max-width: 768px) {
     .about p {
         font-size: 18px;
         line-height: 28px;
@@ -139,9 +141,7 @@ h1 {
     .headabout {
         font-size: 24px;
     }
-}
 
-@media screen and (max-width: 768px) {
     h1 {
         font-size: 1.8rem;
     }
@@ -155,17 +155,86 @@ h1 {
         line-height: 1.5;
         text-align: justify;
     }
-}
 
-@media screen and (max-width: 768px) {
     .registration-headingabout h2 {
         font-size: 20px;
         margin-left: 0;
         text-align: center;
     }
+
+    .conference-details p{
+        text-align: center;
+    }
 }
-@media screen and (max-width: 768px) {
-  .conference-details p{
-    text-align: center;
-  }
+
+/* Phone: 480px (New Additions) */
+@media (max-width: 480px) {
+    /* Navbar */
+    .navbarabout {
+        padding: 10px 15px !important;
+        display: flex !important;
+        justify-content: space-between;
+    }
+
+    .nav-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: linear-gradient(to right, rgb(111, 152, 175), rgb(47, 108, 169), rgb(190, 190, 237));
+        flex-direction: column;
+        padding: 15px 0 !important;
+        display: none !important;
+        z-index: 1000;
+        margin: 0;
+        padding-right: 0 !important;
+    }
+
+    .nav-links.active {
+        display: flex !important;
+    }
+
+    .nav-links li {
+        margin: 10px 0 !important;
+        text-align: center;
+    }
+
+    .menu-toggle {
+        display: block !important;
+        cursor: pointer;
+    }
+
+    /* About Section */
+    .about {
+        width: 95% !important;
+        padding: 10px !important;
+    }
+
+    .headabout h1 {
+        font-size: 1.5rem !important;
+        text-align: center;
+    }
+
+    .about p {
+        font-size: 14px !important;
+        line-height: 1.6 !important;
+    }
+
+    /* Registration Heading */
+    .registration-headingabout h2 {
+        font-size: 1.3rem !important;
+    }
+
+    /* Footer Table */
+    .footer-section table td {
+        display: block !important;
+        width: 100% !important;
+        text-align: center !important;
+        padding: 8px !important;
+    }
+
+    /* Animations */
+    h1, .about p {
+        animation-duration: 0.8s !important;
+    }
 }
