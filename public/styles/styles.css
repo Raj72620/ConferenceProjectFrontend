@@ -94,18 +94,21 @@
 
 .navbar {
     display: flex;
-    justify-content: center; /* Center content horizontally */
-    padding: 20px 0;
+    justify-content: center;
+    width: 100%;
+    background: linear-gradient(to right, rgb(111, 152, 175), rgb(47, 108, 169), rgb(190, 190, 237));
+    padding: 20px 0px;
     position: relative;
+    z-index: 1000; /* Increased z-index */
 }
 
 .nav-links {
     display: flex;
-    justify-content: center; /* Center links horizontally */
+    justify-content: center;
+    list-style: none;
     width: auto; /* Remove full-width constraint */
     margin: 0 auto; /* Center navigation container */
     padding: 0;
-    list-style: none;
 }
 
 .nav-links li {
