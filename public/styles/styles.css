@@ -509,27 +509,110 @@ ul li::before {
 }
 
 /* Phone: Navbar */
+/* Add these styles to your existing CSS */
+
+/* Mobile Menu Toggle */
+.menu-toggle {
+    display: none;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.menu-toggle span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background: white;
+    margin: 4px 0;
+    transition: 0.3s;
+}
+
+/* Mobile Menu Animation */
+.menu-toggle.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.menu-toggle.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.menu-toggle.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -6px);
+}
+
+/* Enhanced Responsive Navbar */
 @media (max-width: 768px) {
+    .navbar {
+        padding: 15px 0;
+        position: relative;
+    }
+
     .nav-links {
-      display: none !important; /* Hide desktop menu */
+        display: none;
+        width: 100%;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background: linear-gradient(to right, rgb(111, 152, 175), rgb(47, 108, 169), rgb(190, 190, 237));
+        padding: 0;
+        z-index: 1000;
     }
-    .menu-toggle {
-      display: block !important; /* Show hamburger */
-      position: absolute;
-      right: 20px;
-      top: 20px;
-    }
-    /* Active mobile menu */
+
     .nav-links.active {
-      display: flex !important;
-      flex-direction: column;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      width: 100%;
-      background: linear-gradient(to right, rgb(111, 152, 175), rgb(47, 108, 169), rgb(190, 190, 237));
+        display: flex;
+        flex-direction: column;
+        animation: slideDown 0.3s ease-out;
     }
-  }
+
+    .nav-links li {
+        margin: 0;
+        padding: 12px 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .nav-links a {
+        padding: 10px 0;
+        display: block;
+    }
+
+    .dropdown-menu {
+        position: static;
+        background: transparent;
+        box-shadow: none;
+        margin: 0;
+        padding-left: 20px;
+        display: none;
+    }
+
+    .dropdown:hover .dropdown-menu {
+        display: none; /* Disable hover on mobile */
+    }
+
+    .dropdown.active .dropdown-menu {
+        display: block;
+        animation: slideDown 0.3s ease-out;
+    }
+
+    .menu-toggle {
+        display: block;
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 @media screen and (max-width: 768px) {
     .conference-section img {
         display: none;

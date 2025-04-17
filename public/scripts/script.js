@@ -192,14 +192,23 @@ function initializeCarousel() {
 }
 
 
-
-
-
-
-// Utility Functions
 function toggleMenu() {
-    document.querySelector('.nav-links').classList.toggle('active');
+    const navLinks = document.querySelector('.nav-links');
+    const menuToggle = document.querySelector('.menu-toggle');
+    navLinks.classList.toggle('active');
+    menuToggle.classList.toggle('active');
 }
+
+// Handle dropdown menus on mobile
+document.querySelectorAll('.dropdown > a').forEach(link => {
+    link.addEventListener('click', (e) => {
+        if (window.innerWidth <= 768) {
+            e.preventDefault();
+            const dropdown = e.target.closest('.dropdown');
+            dropdown.classList.toggle('active');
+        }
+    });
+});
 
 // Image Zoom Effect
 window.onload = () => {
