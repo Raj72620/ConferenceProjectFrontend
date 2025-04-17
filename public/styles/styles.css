@@ -1,8 +1,10 @@
-*{
+/* Reset default margins and paddings for all elements */
+* {
     margin: 0px;
     padding: 0px;
 }
-/* navbar one */
+
+/* navbar one - contact info bar */
 .contact-bar {
     background: linear-gradient(to right, rgb(123, 176, 203), rgb(167, 240, 248), rgb(182, 182, 236));
     color: white;
@@ -12,7 +14,8 @@
     align-items: center;
     font-family: Arial, sans-serif;
 }
-/* conference section */
+
+/* Contact bar links */
 .contact-bar a {
     color: white;
     text-decoration: none;
@@ -21,76 +24,72 @@
     align-items: center;
 }
 
+/* Phone icon inside contact bar */
 .phone-icon {
     font-size: 15px;
     margin-left: 10px;
     padding-bottom: 5px;
-    color:white;
+    color: white;
 }
-/* animation */
-/* Initial State - Positioned Off-Screen */
+
+/* Animation for email and WhatsApp icons sliding in */
 #email {
     opacity: 0;
-    transform: translateX(-150px); /* Move more left for better visibility */
+    transform: translateX(-150px);
     transition: transform 1.2s ease-out, opacity 1.2s ease-out;
 }
 
 #whatsapp {
     opacity: 0;
-    transform: translateX(150px); /* Move more right for better visibility */
+    transform: translateX(150px);
     transition: transform 1.2s ease-out, opacity 1.2s ease-out;
 }
 
-/* Animation Trigger - Elements Slide In */
+/* Trigger animation when contact-bar has 'show' class */
 .contact-bar.show #email,
 .contact-bar.show #whatsapp {
     opacity: 1;
     transform: translateX(0);
 }
-/* conference section */
+
+/* Conference section layout */
 .conference-section {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px;
-    background-color: #f4f4f4;
     padding: 50px 100px;
+    background-color: #f4f4f4;
 }
 
+/* Conference section images */
 .logo-container img,
 .extra-logo-container img {
-    width: 150px; /* Adjust as needed */
+    width: 150px;
     height: auto;
-}
-
-.conference-details {
-    text-align: center;
-    font-size: 20px;
-    background-color: #f0f0f0;
-}
-
-.highlight {
-    /* color: red; */
-    font-size: larger;
-    font-weight: bold;
-}
-/* conference Animation */
-.logo-container img,
-.extra-logo-container img {
     opacity: 0;
     transform: translateY(-30px);
     transition: transform 1s ease-out, opacity 1s ease-out;
     margin: 2px;
 }
 
+/* Conference details text box */
 .conference-details {
+    text-align: center;
+    font-size: 20px;
+    background-color: #f0f0f0;
     opacity: 0;
-    transform: scale(0.8);
-    transition: transform 1s ease-out, opacity 1s ease-out;
+    transform: scale(0.5);
+    transition: transform 1s ease-out, opacity 1s ease-out, font-size 1s ease-out;
     border-radius: 10px;
 }
 
-/* Trigger Animation When Section Becomes Visible */
+/* Highlight text in conference section */
+.highlight {
+    font-size: larger;
+    font-weight: bold;
+}
+
+/* When 'animate-section' class is added — animate logos and text */
 .conference-section.animate-section .logo-container img,
 .conference-section.animate-section .extra-logo-container img {
     opacity: 1;
@@ -100,33 +99,20 @@
 .conference-section.animate-section .conference-details {
     opacity: 1;
     transform: scale(1);
-}
-
-/* Initially Hidden */
-.conference-details {
-    opacity: 0;
-    transform: scale(0.5);  
-    font-size: 0.8em;  
-    transition: transform 1s ease-out, opacity 1s ease-out, font-size 1s ease-out;
-}
-
- 
-.conference-section.animate-section .conference-details {
-    
-    opacity: 1;
-    transform: scale(1); 
-    font-size: 1.1em; 
+    font-size: 1.1em;
     font-weight: bolder;
 }
 
+/* Navbar styling */
 .navbar {
     width: 100%;
     background: linear-gradient(to right, rgb(111, 152, 175), rgb(47, 108, 169), rgb(190, 190, 237));
     padding: 20px 0px;
-    position: relative; 
+    position: relative;
     z-index: 10;
 }
 
+/* Navbar links layout */
 .nav-links {
     display: flex;
     justify-content: center;
@@ -134,11 +120,13 @@
     margin: 0;
 }
 
+/* Navbar link items */
 .nav-links li {
     margin: 0 15px;
     font-weight: bolder;
 }
 
+/* Navbar anchor links */
 .nav-links a {
     text-decoration: none;
     color: white;
@@ -146,53 +134,62 @@
     transition: background 0.3s ease;
 }
 
+/* Hover effect for navbar links */
 .nav-links a:hover {
     background: linear-gradient(to right, rgb(136, 156, 242), rgb(158, 218, 238), rgb(124, 144, 183));
     border-radius: 5px;
 }
+
+/* Dropdown menu styling */
 .dropdown-menu {
     display: none;
     position: absolute;
-    background:linear-gradient(to right, rgb(111, 152, 175), rgb(47, 108, 169), rgb(190, 190, 237));
+    background: linear-gradient(to right, rgb(111, 152, 175), rgb(47, 108, 169), rgb(190, 190, 237));
     list-style: none;
     margin: 10px;
-    /* color: black; */
 }
-.dropdown-menu ul li{
+
+/* Dropdown menu items */
+.dropdown-menu ul li {
     padding: 10px;
     background-color: rgb(186, 247, 244);
 }
+
+/* Show dropdown on hover */
 .dropdown:hover .dropdown-menu {
     display: block;
     padding: 10px 10px;
 }
-/* regsitration div */
+
+/* Registration heading bar */
 .registration-heading {
-    /* text-align: center; */
     padding: 20px;
     font-size: 24px;
     font-weight: bold;
-    background:linear-gradient(to right, #ECF0F1, #66a5c1);
-    color:#3861d4;
+    background: linear-gradient(to right, #ECF0F1, #66a5c1);
+    color: #3861d4;
 }
-.registration-heading h2{
+
+/* Registration heading text */
+.registration-heading h2 {
     margin-left: 15.5vw;
 }
-/* images animation */
+
+/* Container for large images */
 .container {
-    width: 100%;   /* Full width of the screen */
-    height: 50vh;   /* Half the height of the screen */
+    width: 100%;
+    height: 50vh;
     display: flex;
     justify-content: center;
-    align-items: center; /* Optional: Set background to avoid white gaps */
+    align-items: center;
 }
 
 .container img {
-    width: 100%;   /* Ensure full width */
-    height: 100%;  /* Ensure full height */
-    /* object-fit: contain; */
+    width: 100%;
+    height: 100%;
 }
-/* conference container */
+
+/* Conference info container layout */
 .conference-container1 {
     display: flex;
     max-width: 1200px;
@@ -203,12 +200,13 @@
     overflow: hidden;
 }
 
-/* Left Section */
+/* Left side section */
 .left-section {
     width: 30%;
     background-color: #6878cf;
     color: rgb(255, 255, 255);
     padding: 20px;
+    animation: slide-in-left 3s ease-out;
 }
 
 .left-section h3 {
@@ -216,6 +214,7 @@
     text-align: center;
 }
 
+/* Box inside left section */
 .conference-box {
     background-color: #5b8cbc;
     padding: 15px;
@@ -228,17 +227,19 @@
     color: #c2f1f1;
 }
 
-.conference-box a, .conference-box p {
+.conference-box a,
+.conference-box p {
     color: white;
     font-size: 14px;
     text-decoration: none;
 }
 
-/* Right Section */
+/* Right side section */
 .right-section {
     width: 70%;
     padding: 10px;
     overflow: scroll;
+    animation: slide-in-right 3s ease-out;
 }
 
 .right-section h2 {
@@ -251,6 +252,7 @@
     color: #333;
 }
 
+/* Know more button */
 .know-more-btn {
     background-color: #1a9490;
     color: white;
@@ -265,11 +267,8 @@
 .know-more-btn:hover {
     background-color: #4667c0;
 }
-/* conference conatiner Animation */
-.left-section {
-    animation: slide-in-left 3s ease-out;
-}
 
+/* Animation for left section */
 @keyframes slide-in-left {
     from {
         opacity: 0;
@@ -281,11 +280,7 @@
     }
 }
 
-/* Right Section Animation (Fast Entry) */
-.right-section {
-    animation: slide-in-right 3s ease-out;
-}
-
+/* Animation for right section */
 @keyframes slide-in-right {
     from {
         opacity: 0;
@@ -296,44 +291,48 @@
         transform: translateX(0);
     }
 }
+
+/* Image carousel container */
 .carousel-container {
     width: 100%;
-    height: 400px; /* Adjust height as needed */
+    height: 400px;
     position: relative;
     overflow: hidden;
 }
-/* Phone: Carousel */
-@media (max-width: 480px) { /* ADD THIS */
+
+/* Phone responsiveness for carousel */
+@media (max-width: 480px) {
     .carousel-container {
-      height: 30vh !important; 
+        height: 30vh !important;
     }
-  }
-/* Wrapper for images */
+}
+
+/* Wrapper for carousel images */
 .carousel-wrapper {
     display: flex;
     transition: transform 0.5s ease-in-out;
 }
 
-/* Individual slide */
+/* Individual slide inside carousel */
 .carousel-item {
     min-width: 100%;
     transition: transform 0.5s ease-in-out;
 }
 
-/* Images inside the carousel */
+/* Images inside each slide */
 .carousel-item img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Ensures image covers the full width */
+    object-fit: cover;
     transition: transform 0.5s ease-in-out;
 }
 
-/* Zoom effect on the active image */
+/* Zoom effect for active carousel image */
 .carousel-item.active img {
     transform: scale(1.05);
 }
 
-/* Navigation buttons */
+/* Navigation buttons for carousel */
 .carousel-btn {
     position: absolute;
     top: 50%;
@@ -345,6 +344,39 @@
     cursor: pointer;
     font-size: 18px;
 }
+
+/* Custom navigation buttons for video carousels */
+/* Same styling as image carousel, but can be independently controlled if needed */
+.video-carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 18px;
+    z-index: 5;
+}
+
+/* Additional hover effect if desired */
+.video-carousel-btn:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 .prev { left: 10px; }
 .next { right: 10px; }
