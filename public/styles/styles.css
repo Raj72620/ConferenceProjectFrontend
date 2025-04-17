@@ -324,6 +324,17 @@
       height: 30vh !important; 
     }
   }
+  .carousel {
+    margin: 0;
+    padding: 0;
+  }
+  
+  .carousel video {
+    width: 100vw;
+    height: auto;
+    display: block;
+  }
+  
 /* Wrapper for images */
 .carousel-wrapper {
     display: flex;
