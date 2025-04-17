@@ -1,6 +1,7 @@
 *{
     margin: 0px;
     padding: 0px;
+    box-sizing: border-box;
 }
 /* navbar one */
 .contact-bar {
@@ -188,10 +189,11 @@
 }
 
 .container img {
-    width: 100%;   /* Ensure full width */
-    height: 100%;  /* Ensure full height */
-    /* object-fit: contain; */
-}
+    width: 100%;
+    height: auto;
+    max-height: 50vh;
+    object-fit: contain;
+  }
 /* conference container */
 .conference-container1 {
     display: flex;
