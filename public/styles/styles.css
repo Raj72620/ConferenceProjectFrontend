@@ -93,18 +93,19 @@
 }
 
 .navbar {
-    width: 100%;
-    background: linear-gradient(to right, rgb(111, 152, 175), rgb(47, 108, 169), rgb(190, 190, 237));
-    padding: 20px 0px;
+    display: flex;
+    justify-content: center; /* Center content horizontally */
+    padding: 20px 0;
     position: relative;
-    z-index: 1000; /* Increased z-index */
 }
 
 .nav-links {
     display: flex;
-    justify-content: center;
+    justify-content: center; /* Center links horizontally */
+    width: auto; /* Remove full-width constraint */
+    margin: 0 auto; /* Center navigation container */
+    padding: 0;
     list-style: none;
-    margin: 0;
 }
 
 .nav-links li {
@@ -507,9 +508,6 @@ ul li::before {
         width: 120px;
     }
 }
-
-/* Phone: Navbar */
-/* Add these styles to your existing CSS */
 
 /* Mobile Menu Toggle */
 .menu-toggle {
