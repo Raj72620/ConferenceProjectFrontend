@@ -1,7 +1,7 @@
 *{
     margin: 0px;
     padding: 0px;
-    box-sizing: border-box;
+    
 }
 /* navbar one */
 .contact-bar {
@@ -179,7 +179,21 @@
 .registration-heading h2{
     margin-left: 15.5vw;
 }
+/* images animation */
+.container {
+    width: 100%;   /* Full width of the screen */
+    height: 50vh;   /* Half the height of the screen */
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Optional: Set background to avoid white gaps */
+}
 
+.container img {
+    width: 100%;
+    height: auto;
+    max-height: 50vh;
+    object-fit: contain;
+  }
 /* conference container */
 .conference-container1 {
     display: flex;
@@ -190,21 +204,7 @@
     border-radius: 8px;
     overflow: hidden;
 }
-.video-carousel-container {
-    width: 100%;
-    height: 50vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .video-carousel-container video {
-    width: 100%;
-    height: auto;
-    max-height: 50vh;
-    object-fit: cover;
-  }
-  
+
 /* Left Section */
 .left-section {
     width: 30%;
@@ -310,17 +310,6 @@
       height: 30vh !important; 
     }
   }
-  .carousel {
-    margin: 0;
-    padding: 0;
-  }
-  
-  .carousel video {
-    width: 100vw;
-    height: auto;
-    display: block;
-  }
-  
 /* Wrapper for images */
 .carousel-wrapper {
     display: flex;
